@@ -38,7 +38,7 @@ TO DO LIST :
 
 
 //this is the package name , you need it to access the java class like importing , import arabware.file.ArabWareFileManager;
-package com.android.prime.arab.ware.everythingutils;
+package arabware.file;
 
 // these are the imports
 
@@ -69,10 +69,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
-import com.android.prime.arab.ware.everythingutils.listeners.CopyTask;
-import com.android.prime.arab.ware.everythingutils.listeners.CreateNewTask;
-import com.android.prime.arab.ware.everythingutils.listeners.DeleteTask;
-import com.android.prime.arab.ware.everythingutils.listeners.RenameTask;
+import arabware.file.listeners.CopyTask;
+import arabware.file.listeners.CreateNewTask;
+import arabware.file.listeners.DeleteTask;
+import arabware.file.listeners.RenameTask;
 
 //this is the definition of the class
 
@@ -87,19 +87,19 @@ public class ArabWareFileManager {
     public static final boolean android5 = 23 > Build.VERSION.SDK_INT;
 
     //context of an activity or any class that extends it , for fragments it must be FragmentName.this.getActivity , for activities it must be ActivityName.this
-    public static final boolean android6 = Build.VERSION.SDK_INT == 23;
+    public static final boolean android6 = android.os.Build.VERSION.SDK_INT == 23;
 
     //array list of Strings , these are the files or folders or both
-    public static final boolean android7 = 26 > Build.VERSION.SDK_INT && Build.VERSION.SDK_INT > 23;
-    public static final boolean android8 = 28 > Build.VERSION.SDK_INT && Build.VERSION.SDK_INT > 25;
-    public static final boolean android9 = Build.VERSION.SDK_INT == 28;
+    public static final boolean android7 = 26 > android.os.Build.VERSION.SDK_INT && android.os.Build.VERSION.SDK_INT > 23;
+    public static final boolean android8 = 28 > android.os.Build.VERSION.SDK_INT && android.os.Build.VERSION.SDK_INT > 25;
+    public static final boolean android9 = android.os.Build.VERSION.SDK_INT == 28;
 
 
     //just temporary strings to add "/" or to not add , or for doing other stuff
-    public static final boolean android10 = Build.VERSION.SDK_INT == 29;
-    public static final boolean android11 = Build.VERSION.SDK_INT == 30;
-    public static final boolean android12 = Build.VERSION.SDK_INT == 31;
-    public static final boolean android13 = Build.VERSION.SDK_INT == 32;
+    public static final boolean android10 = android.os.Build.VERSION.SDK_INT == 29;
+    public static final boolean android11 = android.os.Build.VERSION.SDK_INT == 30;
+    public static final boolean android12 = android.os.Build.VERSION.SDK_INT == 31;
+    public static final boolean android13 = android.os.Build.VERSION.SDK_INT == 32;
 
 
     //just to save errors temporary
@@ -217,13 +217,13 @@ public class ArabWareFileManager {
     //this method renames folder or file with new name of path from constructors that contain String
 
     public static boolean isAndroid11() {
-        return (Build.VERSION.SDK_INT == 30 || Build.VERSION.SDK_INT > 30);
+        return (android.os.Build.VERSION.SDK_INT == 30 || android.os.Build.VERSION.SDK_INT > 30);
     }
 
     //this method moves folder or file to path from constructors that contain String
 
     public static boolean isAndroid6() {
-        return (Build.VERSION.SDK_INT == 23 || Build.VERSION.SDK_INT > 23);
+        return (android.os.Build.VERSION.SDK_INT == 23 || android.os.Build.VERSION.SDK_INT > 23);
     }
 
 
@@ -853,15 +853,15 @@ public class ArabWareFileManager {
     public <T extends Context> void share(T c, String type, String message) {
         android.os.StrictMode.VmPolicy.Builder builder = new android.os.StrictMode.VmPolicy.Builder();
         android.os.StrictMode.setVmPolicy(builder.build());
-        Intent sharingIntent = new Intent( Intent.ACTION_SEND);
-        Uri screenshotUri = Uri.parse(path);
+        android.content.Intent sharingIntent = new android.content.Intent(android.content.Intent.ACTION_SEND);
+        android.net.Uri screenshotUri = android.net.Uri.parse(path);
         if (type == null || type.equals("")) {
             sharingIntent.setType("*/*");
         } else {
             sharingIntent.setType(type);
         }
-        sharingIntent.putExtra( Intent.EXTRA_STREAM, screenshotUri);
-        c.startActivity( Intent.createChooser( sharingIntent, message));
+        sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM, screenshotUri);
+        c.startActivity(android.content.Intent.createChooser(sharingIntent, message));
 
     }
 
