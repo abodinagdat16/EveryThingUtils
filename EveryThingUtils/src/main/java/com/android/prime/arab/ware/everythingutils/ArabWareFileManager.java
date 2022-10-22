@@ -39,7 +39,7 @@ TO DO LIST :
 
 //this is the package name , you need it to access the java class like importing , import arabware.file.ArabWareFileManager;
 
-package com.android.prime.arab.ware.everythingutils.listeners;
+package com.android.prime.arab.ware.everythingutils;
 
 
 // these are the imports
@@ -48,7 +48,7 @@ package com.android.prime.arab.ware.everythingutils.listeners;
 import java.lang.String;
 import java.util.ArrayList;
 import android.content.Context;
-import arabware.file.listeners.*;
+import com.android.prime.arab.ware.everythingutils.listeners.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;

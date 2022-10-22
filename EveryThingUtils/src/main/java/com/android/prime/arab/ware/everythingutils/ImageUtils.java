@@ -13,7 +13,7 @@ Sketchup and others : about 5%
 */
 
 
-package com.android.prime.arab.ware.everythingutils.listeners;
+package com.android.prime.arab.ware.everythingutils;
 
 
 import android.content.Context; /*the most important class in every android device , without this

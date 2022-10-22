@@ -1,4 +1,4 @@
-package com.android.prime.arab.ware.everythingutils.listeners;
+package com.android.prime.arab.ware.everythingutils;
 
 import android.app.Activity;
 import android.view.WindowMetrics;

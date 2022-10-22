@@ -19,7 +19,7 @@ Happy coding everyone ... I hope this class was helpful!
 //package arabware.file;
 
 
-package com.android.prime.arab.ware.everythingutils.listeners;
+package com.android.prime.arab.ware.everythingutils;
 
 //imports of classes
 

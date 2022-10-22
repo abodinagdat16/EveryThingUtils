@@ -1,4 +1,4 @@
-package com.android.prime.arab.ware.everythingutils.listeners;
+package com.android.prime.arab.ware.everythingutils;
 
 
 
@@ -16,7 +16,7 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.net.URI;
 import java.net.URL;
-import arabware.file.listeners.LoadingInterface;
+import com.android.prime.arab.ware.everythingutils.listeners.LoadingInterface;
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.app.Activity;
