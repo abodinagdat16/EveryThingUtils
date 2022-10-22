@@ -38,7 +38,7 @@ TO DO LIST :
 
 
 //this is the package name , you need it to access the java class like importing , import arabware.file.ArabWareFileManager;
-package arabware.file;
+package com.android.prime.arab.ware.everythingutils;
 
 // these are the imports
 
@@ -69,10 +69,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
-import arabware.file.listeners.CopyTask;
-import arabware.file.listeners.CreateNewTask;
-import arabware.file.listeners.DeleteTask;
-import arabware.file.listeners.RenameTask;
+import com.android.prime.arab.ware.everythingutils.listeners.CopyTask;
+import com.android.prime.arab.ware.everythingutils.listeners.CreateNewTask;
+import com.android.prime.arab.ware.everythingutils.listeners.DeleteTask;
+import com.android.prime.arab.ware.everythingutils.listeners.RenameTask;
 
 //this is the definition of the class
 
