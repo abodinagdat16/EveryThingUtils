@@ -1,5 +1,5 @@
-# FileWareUtils
-It is a FileUtil to help developers to work with files / or any thing else , please read the usage and warnings to know how it works.
+# EveryThingUtils
+It is a FileUtil/AnyThingElseUtils to help developers to work with files / or any thing else , please read the usage and warnings to know how it works.
 <br><br>
 [![](https://jitpack.io/v/abodinagdat16/FileWareUtils.svg)](https://jitpack.io/#abodinagdat16/FileWareUtils)
 ### Configure
