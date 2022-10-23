@@ -4,9 +4,9 @@
 
 credits :
 
-ArabWare : about 75%
+ArabWare : about 80%
 
-StackOverFlow : about 20%
+StackOverFlow : about 15%
 
 Sketchup and others : about 5%
 
@@ -44,12 +44,15 @@ import java.util.Comparator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import android.view.View;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ImageView;
 import java.net.HttpURLConnection;
+import com.android.prime.arab.ware.everythingutils.listeners.BitmapTasks;
 
 
 /*the class definition*/
-@java.lang.SuppressWarnings("deprecation")
+
 public class ImageUtils {
     
     /*
@@ -87,7 +90,14 @@ public class ImageUtils {
     
     public ImageUtils(Context c) {
         context = c;
+        
+        if(c==null||context==null) {
+            throw new RuntimeException(new Exception("your Context cannot be null , ImageUtils is unable to do its full jobs if there is no context"));
+        }
     }
+    
+    
+    
     
     
     public void setFromFile(File file) throws Exception {
@@ -100,19 +110,179 @@ public class ImageUtils {
             throw new RuntimeException(new Exception("your path does not exist.make sure you are getting bitmap of a valid file"));
         }
         
-        bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(),bf());
     }
     
-    public void setFromResources(int resource) throws Exception {
-        bitmap = BitmapFactory.decodeResource(context.getResources(),resource);
+    public void setFromFile(File file , BitmapTasks bt) {
+        
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                setFromFile(file);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
     }
+    
+    
+    
+    
+    
+    public void setFromResources(int resource) throws Exception {
+        bitmap = BitmapFactory.decodeResource(context.getResources(),resource,bf());
+    }
+    
+    public void setFromResources(int resource , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                setFromResources(resource);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
     
     public void setFromResources(String resourceName , String resourceFolder) throws Exception {
         setFromResources(context.getResources().getIdentifier(resourceName,resourceFolder, context.getPackageName()));
     }
     
+    public void setFromResource(String resourceName , String resourceFolder , BitmapTasks bt) {
+        setFromResources(context.getResources().getIdentifier(resourceName,resourceFolder, context.getPackageName()),bt);
+    }
+    
     public void setFromAssets(String assets) throws IOException {
-        bitmap = BitmapFactory.decodeStream(context.getAssets().open(assets));
+        
+        
+        
+        bitmap = BitmapFactory.decodeStream(context.getAssets().open(assets),null,bf());
+        
+        
+        
+    }
+    
+    public void setFromAssets(String assets , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                setFromAssets(assets);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(IOException e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
     }
     
     /*not supported currently*/
@@ -143,9 +313,58 @@ public class ImageUtils {
         bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),getRotate(new Matrix(),a),true);
         
         
+        
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
+        
+    }
+    
+    public void rotate(int a , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                rotate(a);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
         
     }
     
@@ -186,6 +405,54 @@ public class ImageUtils {
         }
     }
     
+    public void flipHorizontally(BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                flipHorizontally();
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
     public void flipVertically() {
         
         if(bitmap == null) {
@@ -193,9 +460,58 @@ public class ImageUtils {
         }
         
         bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),flip(false,new Matrix()),true);
+        bitmap = bitmap.copy(bitmap.getConfig(),true);
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
+    }
+    
+    public void flipVertically(BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                flipVertically();
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
     }
     
     
@@ -237,15 +553,63 @@ public class ImageUtils {
         Paint paint = new Paint();
         paint.setColorFilter(new ColorMatrixColorFilter(cm));
         canvas.drawBitmap(bitmap, 0, 0, paint);
-        bitmap = temp;
-        
-        
-        
+        bitmap = (Bitmap)temp;
         
         
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
+        
+        canvas = null;
+        paint = null;
+        
+        
+    }
+    
+    public void setContrast(int contrast , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                setContrast(contrast);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
         
         
     }
@@ -278,6 +642,56 @@ public class ImageUtils {
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
+        canvas = null;
+        paint = null;
+        
+        
+    }
+    
+    public void setBrightness(int brightness , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                setBrightness(brightness);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
         
         
     }
@@ -310,6 +724,57 @@ public class ImageUtils {
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
+        
+        c = null;
+        p = null;
+        
+        
+    }
+    
+    public void setAlpha(int alpha , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                setAlpha(alpha);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
         
         
     }
@@ -350,6 +815,9 @@ public class ImageUtils {
             bitmaps.add(bitmap);
         }
         
+        c = null;
+        paint = null;
+        
         
         }
         
@@ -380,6 +848,9 @@ public class ImageUtils {
             bitmaps.add(bitmap);
         }
         
+        c = null;
+        paint = null;
+        
         
         }
         
@@ -389,6 +860,54 @@ public class ImageUtils {
         
         
         
+        
+        
+        
+    }
+    
+    public void setFilter(String filter , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                setFilter(filter);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
         
         
         
@@ -410,7 +929,7 @@ public class ImageUtils {
                 
                 bitmap = Bitmap.createScaledBitmap(temp,((int)temp.getWidth()*blurValue),((int)temp.getHeight()*blurValue),false);
                 
-                
+                temp = null;
                 
                 if(bitmaps != null) {
                     bitmaps.add(bitmap);
@@ -421,16 +940,72 @@ public class ImageUtils {
         
     }
     
+    public void blur(int blurValue , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                blur(blurValue);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
     
     
     
-    public int getMostUsedColor() {
+    
+    public int getMostUsedColor() throws Exception {
+        
+        if((getWidthPx()*getHeightPx())>=2147483647) {
+            throw new Exception("you can not load big images pixels-array , this is not BECASE of my LIBRARY but the java itself , yeah because there is a limit on the Arrays , 2,147,483,647 items , if more , throws an exception (OutOfMemory).");
+        }
         
         return getMostRepeatedInteger();
         
     }
     
-    public String getMostUsedColorAsString() {
+    public String getMostUsedColorAsString() throws Exception {
+        
+        if((getWidthPx()*getHeightPx())>=2147483647) {
+            throw new Exception("you can not load big images pixels-array , this is not BECASE of my LIBRARY but the java itself , yeah because there is a limit on the Arrays , 2,147,483,647 items , if more , throws an exception (OutOfMemory).");
+        }
         
         return "#" + Integer.toHexString(getMostUsedColor()).substring(0);
         
@@ -446,20 +1021,20 @@ public class ImageUtils {
     */
     
     
-    public int getMostRepeatedInteger() {
+    public int getMostRepeatedInteger() throws Exception {
         return Integer.valueOf(((Integer) ((Entry) ((Map) getPixels().stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))).entrySet().stream().max(new RandomClass()).get()).getKey()).intValue()).intValue();
     }
 
-    static /* synthetic */ int randomThing(Entry entry, Entry entry2) {
+    
+    
+    public final /* synthetic */ class RandomClass implements Comparator {
+    public final int compare(Object obj, Object obj2) {
+        Entry entry = (Entry)obj;
+        Entry entry2 = (Entry)obj2;
         if (entry.getValue() == entry2.getValue()) {
             return Long.compare((long) ((Integer) entry.getKey()).intValue(), (long) ((Integer) entry2.getKey()).intValue());
         }
         return Long.compare(((Long) entry.getValue()).longValue(), ((Long) entry2.getValue()).longValue());
-    }
-    
-    public final /* synthetic */ class RandomClass implements Comparator {
-    public final int compare(Object obj, Object obj2) {
-        return ImageUtils.randomThing((Entry) obj, (Entry) obj2);
     }
 }
 
@@ -511,26 +1086,157 @@ public class ImageUtils {
         
     }
     
-    
-    
-    
-    public void addBitmap(Bitmap bitmap , int x , int w) {
+    public void setWidthAndHeightPx(int w , int h , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                setWidthAndHeightPx(w,h);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
         
     }
     
     
-    public ArrayList<Integer> getPixels() {
+    
+    
+    public void addBitmap(Bitmap b , int x , int y , int waterMarkWidth , int waterMarkHeight , boolean movingFromCenter) {
+        
+        Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
+        
+        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
+        
+        tmp2 = tmp2.copy(tmp2.getConfig(),true);
+        
+        
+        Canvas c = new Canvas(tmp);
+        
+        if(movingFromCenter) {
+            
+            x = x - bitmap.getWidth()/2;
+            
+            y = y - bitmap.getHeight()/2;
+            
+            
+        }
+        
+        c.drawBitmap(tmp2,x,y,null);
+        
+        bitmap = tmp;
+        
+        c = null;
+        tmp2 = null;
+        
+        if(bitmaps != null) {
+            bitmaps.add(bitmap);
+        }
+        
+    }
+    
+    public void addBitmap(Bitmap b , int x , int y , int waterMarkWidth , int waterMarkHeight , boolean movingFromCenter , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                addBitmap(b,x,y,waterMarkWidth,waterMarkHeight,movingFromCenter);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
+    
+    public ArrayList<Integer> getPixels() throws Exception{
+        
+        bitmap = bitmap.copy(bitmap.getConfig(),true);
         
         ArrayList<Integer> data = new ArrayList<>();
         
-        Bitmap temp = bitmap.copy(bitmap.getConfig(),true);
+        if((bitmap.getHeight()*bitmap.getWidth())>=Integer.MAX_VALUE) {
+            throw new Exception("you can not load big images pixels-array , this is not BECASE of my LIBRARY but the java itself , yeah because there is a limit on the Arrays , 2,147,483,647 items , if more , throws an exception (OutOfMemory).");
+        } else {
         
-        int[] pixels = new int[getHeightPx() * getWidthPx()];
+        for(int random = 0; random < bitmap.getHeight(); random++) {
         
-        temp.getPixels(pixels, 0, getWidthPx(), 0, 0, getWidthPx(), getHeightPx());
+        for(int random2 = 0; random2 < bitmap.getWidth(); random2++) {
+            data.add((int)bitmap.getPixel(random2,random));
+        }
         
-        for(int a = 0;a<pixels.length;a++) {
-            data.add(pixels[a]);
+        }
+        
         }
         
         
@@ -542,13 +1248,20 @@ public class ImageUtils {
     
     
     
-    public void changeColor(int color , int color2) {
+    public void changeColor(int color , int color2) throws Exception {
+        
+        
         
         Bitmap temp = bitmap.copy(bitmap.getConfig(),true);
         
         int[] pixels = new int[getHeightPx() * getWidthPx()];
 
-temp.getPixels(pixels, 0, getWidthPx(), 0, 0, getWidthPx(), getHeightPx());
+
+for(int random = 0; random < temp.getHeight(); random++) {
+
+temp.getPixels(pixels, 0, getWidthPx(), 0, 0, getWidthPx(), random);
+
+}
 
 for(int i = 0; i < pixels.length; i++) {
     if(pixels[i] == color) {
@@ -557,8 +1270,12 @@ for(int i = 0; i < pixels.length; i++) {
     }
 }
 
-temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
+for(int random = 0; random < temp.getHeight(); random++) {
+
+temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         
+        
+}
         bitmap = temp;
         
         
@@ -569,12 +1286,108 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
     }
     
+    public void changeColor(int color1 , int color2 , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                changeColor(color1,color2);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
     
 
-    public void changeColor(String color , String color2) {
+    public void changeColor(String color , String color2) throws Exception {
     
     changeColor(Color.parseColor(color),Color.parseColor(color2));
     
+    }
+    
+    public void changeColor(String color1 , String color2 , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                changeColor(color1,color2);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
     }
     
     
@@ -590,10 +1403,16 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
         int count = 0;
         
-        for(int a = 0; a < getPixels().size();a++) {
-            if(getPixels().get(a) == color) {
+        for(int y = 0; y < getHeightPx(); y++) {
+        
+        for(int x = 0; x < getWidthPx(); x++) {
+            
+            if(getColorAt(x,y) == color) {
                 count = count + 1;
             }
+            
+        }
+        
         }
         
         return count;
@@ -662,6 +1481,54 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
     }
     
+    public void save(String folder , String name , int quality , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                save(folder,name,quality);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
     
     
     public void crop(int fromX , int toX , int fromY , int toY) {
@@ -697,6 +1564,8 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
             
         }
         
+        
+        
         for(int a = 0; a<tempdata.size();a++) {
             i3[a] = tempdata.get(a);
         }
@@ -707,11 +1576,63 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
         bitmap = temporary;
         
+        tmp = null;
+        tmp2 = null;
+        result = null;
+        
         
         
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
+        
+        
+    }
+    
+    public void crop(int fromX , int toX , int fromY , int toY , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                crop(fromX,toX,fromY,toY);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
         
         
     }
@@ -733,13 +1654,62 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
         bitmap = temp;
         
-        
+        c = null;
+        paint = null;
         
         
         
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
+        
+        
+        
+    }
+    
+    public void hide(int fromX , int toX , int fromY , int toY , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                hide(fromX,toX,fromY,toY);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
         
         
         
@@ -767,10 +1737,10 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
     }
     
     
-    public void addWaterMarkTopCenter(Bitmap b , int waterMarkWidth , int wareMarkHeight) {
+    public void addWaterMarkTopCenter(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
-        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,wareMarkHeight);
+        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
         
         tmp2 = tmp2.copy(tmp2.getConfig(),true);
         
@@ -784,15 +1754,20 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
         bitmap = tmp;
         
+        c = null;
+        tmp2 = null;
+        
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
     }
     
-    public void addWaterMarkTopRight(Bitmap b , int waterMarkWidth , int wareMarkHeight) {
+    
+    
+    public void addWaterMarkTopRight(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
-        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,wareMarkHeight);
+        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
         
         tmp2 = tmp2.copy(tmp2.getConfig(),true);
         
@@ -806,15 +1781,18 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
         bitmap = tmp;
         
+        c = null;
+        tmp2 = null;
+        
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
     }
     
-    public void addWaterMarkTopLeft(Bitmap b , int waterMarkWidth , int wareMarkHeight) {
+    public void addWaterMarkTopLeft(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
-        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,wareMarkHeight);
+        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
         
         tmp2 = tmp2.copy(tmp2.getConfig(),true);
         
@@ -828,15 +1806,18 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
         bitmap = tmp;
         
+        c = null;
+        tmp2 = null;
+        
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
     }
     
-    public void addWaterMarkBottomCenter(Bitmap b , int waterMarkWidth , int wareMarkHeight) {
+    public void addWaterMarkBottomCenter(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
-        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,wareMarkHeight);
+        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
         
         tmp2 = tmp2.copy(tmp2.getConfig(),true);
         
@@ -850,15 +1831,18 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
         bitmap = tmp;
         
+        c = null;
+        tmp2 = null;
+        
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
     }
     
-    public void addWaterMarkBottomRight(Bitmap b , int waterMarkWidth , int wareMarkHeight) {
+    public void addWaterMarkBottomRight(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
-        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,wareMarkHeight);
+        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
         
         tmp2 = tmp2.copy(tmp2.getConfig(),true);
         
@@ -872,15 +1856,18 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
         bitmap = tmp;
         
+        c = null;
+        tmp2 = null;
+        
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
     }
     
-    public void addWaterMarkBottomLeft(Bitmap b , int waterMarkWidth , int wareMarkHeight) {
+    public void addWaterMarkBottomLeft(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
-        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,wareMarkHeight);
+        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
         
         tmp2 = tmp2.copy(tmp2.getConfig(),true);
         
@@ -894,16 +1881,19 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
         bitmap = tmp;
         
+        c = null;
+        tmp2 = null;
+        
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
     }
     
-    public void addWaterMarkCenter(Bitmap b , int waterMarkWidth , int wareMarkHeight) {
+    public void addWaterMarkCenter(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
         
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
-        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,wareMarkHeight);
+        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
         
         tmp2 = tmp2.copy(tmp2.getConfig(),true);
         
@@ -917,6 +1907,9 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
         bitmap = tmp;
         
+        c = null;
+        tmp2 = null;
+        
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
@@ -924,10 +1917,10 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
     }
     
-    public void addWaterMarkCenterRight(Bitmap b , int waterMarkWidth , int wareMarkHeight) {
+    public void addWaterMarkCenterRight(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
-        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,wareMarkHeight);
+        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
         
         tmp2 = tmp2.copy(tmp2.getConfig(),true);
         
@@ -940,16 +1933,18 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         c.drawBitmap(tmp2,x,y,null);
         
         bitmap = tmp;
+        c = null;
+        tmp2 = null;
         
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
     }
     
-    public void addWaterMarkCenterLeft(Bitmap b , int waterMarkWidth , int wareMarkHeight) {
+    public void addWaterMarkCenterLeft(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
-        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,wareMarkHeight);
+        Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
         
         tmp2 = tmp2.copy(tmp2.getConfig(),true);
         
@@ -963,10 +1958,446 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
         bitmap = tmp;
         
+        c = null;
+        tmp2 = null;
+        
         if(bitmaps != null) {
             bitmaps.add(bitmap);
         }
     }
+    
+    public void addWaterMarkCenter(Bitmap b , int waterMarkWidth , int waterMarkHeight , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                addWaterMarkCenter(b,waterMarkWidth,waterMarkHeight);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
+    public void addWaterMarkCenterRight(Bitmap b , int waterMarkWidth , int waterMarkHeight , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                addWaterMarkCenterRight(b,waterMarkWidth,waterMarkHeight);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
+    public void addWaterMarkCenterLeft(Bitmap b , int waterMarkWidth , int waterMarkHeight , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                addWaterMarkCenterLeft(b,waterMarkWidth,waterMarkHeight);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
+    public void addWaterMarkTopCenter(Bitmap b , int waterMarkWidth , int waterMarkHeight , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                addWaterMarkTopCenter(b,waterMarkWidth,waterMarkHeight);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
+    public void addWaterMarkTopRight(Bitmap b , int waterMarkWidth , int waterMarkHeight , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                addWaterMarkTopRight(b,waterMarkWidth,waterMarkHeight);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
+    public void addWaterMarkTopLeft(Bitmap b , int waterMarkWidth , int waterMarkHeight , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                addWaterMarkTopLeft(b,waterMarkWidth,waterMarkHeight);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
+    public void addWaterMarkBottomCenter(Bitmap b , int waterMarkWidth , int waterMarkHeight , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                addWaterMarkBottomCenter(b,waterMarkWidth,waterMarkHeight);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
+    public void addWaterMarkBottomRight(Bitmap b , int waterMarkWidth , int waterMarkHeight , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                addWaterMarkBottomRight(b,waterMarkWidth,waterMarkHeight);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
+    public void addWaterMarkBottomLeft(Bitmap b , int waterMarkWidth , int waterMarkHeight , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                addWaterMarkBottomLeft(b,waterMarkWidth,waterMarkHeight);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
+        
+    }
+    
     
     public static Bitmap getBitmapFromFile(File file) throws Exception {
         if(file.exists()) {
@@ -977,19 +2408,19 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
             throw new RuntimeException(new Exception("your path does not exist.make sure you are getting bitmap of a valid file"));
         }
         
-        return BitmapFactory.decodeFile(file.getAbsolutePath());
+        return BitmapFactory.decodeFile(file.getAbsolutePath(),bf());
     }
     
     public static Bitmap getBitmapFromAssets(Context c , String assets) throws IOException {
-        return BitmapFactory.decodeStream(c.getAssets().open(assets));
+        return BitmapFactory.decodeStream(c.getAssets().open(assets),null,bf());
     }
     
     public static Bitmap getBitmapFromResource(Context c , int resource) throws Exception {
-        return BitmapFactory.decodeResource(c.getResources(),resource);
+        return BitmapFactory.decodeResource(c.getResources(),resource,bf());
     }
     
     public static Bitmap getBitmapFromResource(Context c , String resourceFolder , String resourceName) throws Exception {
-        return BitmapFactory.decodeResource(c.getResources(),c.getResources().getIdentifier(resourceName,resourceFolder, c.getPackageName()));
+        return BitmapFactory.decodeResource(c.getResources(),c.getResources().getIdentifier(resourceName,resourceFolder, c.getPackageName()),bf());
     }
     
     public static Bitmap changeWidthAndHeight(Bitmap b , int w , int h) {
@@ -1083,8 +2514,14 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
     
     
     
-    public String getBitmap() {
+    public String getBitmap() throws Exception {
+        
+        if((getWidthPx()*getHeightPx())>=2147483647) {
+            throw new Exception("you can not load big images pixels-array , this is not BECASE of my LIBRARY but the java itself , yeah because there is a limit on the Arrays , 2,147,483,647 items , if more , throws an exception (OutOfMemory).");
+        }
+        
         return getPixels().toString();
+        
     }
     
     
@@ -1092,7 +2529,11 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
     
     
     
-    public void setBitmap(String BitMapData) {
+    public void setBitmap(String BitMapData) throws Exception {
+        
+        if((BitMapData.length()-(BitMapData.replace(",","").length()+1)) >= 2147483647) {
+            throw new Exception("your String equals or more than 2147483647 items so as the java itself does not allow more than that in an ArrayList , this function will never be working");
+        }
         
         BitMapData = BitMapData.replace("[","").replace("]","").replace(" ","");
         
@@ -1110,6 +2551,54 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
         
         bitmap = temp;
+        
+    }
+    
+    public void setBitmap(String bitmapD , BitmapTasks bt) {
+        if(bt != null) {
+            bt.loading();
+        }
+        
+        
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                
+                try {
+                
+                setBitmap(bitmapD);
+                
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.done();
+                    }
+                        }
+                    });
+                
+                } catch(Exception e) {
+                    
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(bt != null) {
+                        bt.error(e.getMessage().toString());
+                    }
+                        }
+                    });
+                    
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
+        }).start();
+        
+        
         
     }
     
@@ -1139,7 +2628,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),getHeightPx());
     
     public void setBitmap(View view) {
         
-        Bitmap temp = Bitmap.createBitmap(view.getWidth(),view.getHeight(),Bitmap.Config.ARGB_8888);
+        Bitmap temp = Bitmap.createBitmap(view.getMeasuredWidth(),view.getMeasuredHeight(),Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(temp);
         view.draw(c);
         bitmap = temp.copy(temp.getConfig(),true);
@@ -1256,6 +2745,14 @@ temp.setPixels(pixels,0,widthPx,0, 0, widthPx,heightPx);
     public void recreateOrSetNewBitmap(int w , int h , String color) {
         recreateOrSetNewBitmap(w,h,Color.parseColor(color));
     }
+    
+    
+    public static final BitmapFactory.Options bf() {
+        BitmapFactory.Options random = new BitmapFactory.Options();
+        random.inMutable = true;
+        return random;
+    }
+    
     
     /*
     
