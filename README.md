@@ -18,14 +18,14 @@ allprojects {
 #### Step 2. Add the dependency
 ```java
 dependencies {
-implementation 'com.github.abodinagdat16:EveryThingUtils:v1.0'
+implementation 'com.github.abodinagdat16:EveryThingUtils:v1.2'
 }
 ```
 
 <br>
 
 - [x] 👇👇⚠️⛔☢
-> BEFORE YOU USE IT !
+> BEFORE YOU USE FileUtils !
 > READ THIS BEFORE READING USAGE TEXT
 - [] it supports android 11 fully but you must add manage all storage permission or any other ways of accessing android folder , I will try to update it soon but currently you should do that yourself to access android folder , other folders are working well
 
