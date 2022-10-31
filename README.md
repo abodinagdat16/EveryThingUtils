@@ -34,3 +34,5 @@ implementation 'com.github.abodinagdat16:EveryThingUtils:v1.2'
 [ApkUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/ApkUtils.md)
 
 [ImageUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/ImageUtils.md)
+
+[PdfUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/PdfUtils.md)
