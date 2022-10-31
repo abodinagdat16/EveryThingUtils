@@ -1,18 +1,20 @@
+//the class package
+
 package com.android.prime.arab.ware.everythingutils;
 
-//imports , every class has many to do with , use your GOOGLE to learn about it
+//the classes imports
 
-import android.graphics.Bitmap;
-import android.graphics.pdf.PdfDocument;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.ParcelFileDescriptor;
-import java.io.File;
-import android.content.Context;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
+import android.graphics.Bitmap; /*the Bitmap class which is the MAIN thing that draw and get info about images ! */
+import android.graphics.pdf.PdfDocument; /*pdf creator , and more */
+import android.os.Handler; /*the thing that is used to make something work on the app ui*/
+import android.os.Looper;/*the thing that is used as param in the Handler constructor*/
+import android.os.ParcelFileDescriptor;/*the thing that is used to get the pdf file*/
+import java.io.File;/*the file class which is used to get info from a file , it is not recommend by google , but still work (until android 13 , i hope it will still supported in 14 and more)*/
+import android.content.Context;/*the context of an activity , fragment etc...*/
+import java.io.FileOutputStream;/*it saves a fil*/
+import java.io.IOException;/*it gets a file task error*/
+import java.io.InputStream;/*it helps in file managing , and more*/
+import java.util.ArrayList;/*it is a list :D*/
 import android.graphics.Bitmap.Config;
 
 
@@ -313,6 +315,45 @@ public class PdfUtils {
 		return getPage(page).getHeight();
 	}
 	
+	public void compresssPdf(int percent , String saveTo , PdfLoading pl) {
+		
+		if(pl != null) {
+			pl.loading();
+		}
+		
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+						for(int a = 0; a < getPages().size(); a++) {
+							bitmaps.set(a,Bitmap.createScaledBitmap(getPage(a),(getPageWidth(a)/(percent/100)),(getPageHeight(a)/(percent/100)),true));
+						}
+						PdfCreator pc = new PdfCreator(context , saveTo);
+						pc.setPdf(PdfUtils.this);
+						pc.save2(pl);
+					
+					} catch(Exception e) {
+					if(pl != null) {
+						new android.os.Handler(android.os.Looper.getMainLooper()).post(new Runnable() {
+							@Override
+							public void run() {
+								if(pl != null) {
+									pl.error(e.getMessage().toString());
+								}
+							}
+						});
+					}
+				}
+			}
+		}).start();
+	
+		
+		
+		
+		
+		
+	}
+	
 	
 	
 	public static class PdfCreator {
@@ -398,6 +439,10 @@ public class PdfUtils {
 			return bitms;
 		}
 		
+		public Bitmap getPage(int page) {
+			return bitms.get(page);
+		}
+		
 		public void save(PdfLoading pl) {
 			
 			
@@ -414,10 +459,9 @@ public class PdfUtils {
 				public void run() {
 					
 					for(int a = 0; a < bitms.size(); a++) {
-						Bitmap bitmap = bitms.get(a).copy(bitms.get(a).getConfig(),true);
-						pageInfo2 = new android.graphics.pdf.PdfDocument.PageInfo.Builder(bitmap.getWidth(),bitmap.getHeight(),1).create();
+						pageInfo2 = new android.graphics.pdf.PdfDocument.PageInfo.Builder(getPageWidth(a),getPageHeight(a),1).create();
 						page2 = pd.startPage(pageInfo2);
-						page2.getCanvas().drawBitmap(bitmap,0,0, null);
+						page2.getCanvas().drawBitmap(bitms.get(a).copy(bitms.get(a).getConfig(),true),0,0, null);
 						pd.finishPage(page2);
 					}
 					
@@ -456,9 +500,60 @@ public class PdfUtils {
 		}
 		
 		
+		public void save2(PdfLoading pl) {
+			
+			
+			
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					
+					for(int a = 0; a < bitms.size(); a++) {
+						pageInfo2 = new android.graphics.pdf.PdfDocument.PageInfo.Builder(getPageWidth(a),getPageHeight(a),1).create();
+						page2 = pd.startPage(pageInfo2);
+						page2.getCanvas().drawBitmap(bitms.get(a).copy(bitms.get(a).getConfig(),true),0,0, null);
+						pd.finishPage(page2);
+					}
+					
+					
+					try {
+						pd.writeTo(new FileOutputStream(new File(path)));
+						
+						if(pl != null) {
+							new android.os.Handler(android.os.Looper.getMainLooper()).post(new Runnable() {
+								@Override
+								public void run() {
+									if(pl != null) {
+										pl.done();
+									}
+								}
+							});
+						}
+						
+						} catch(IOException e) {
+						if(pl != null) {
+							new android.os.Handler(android.os.Looper.getMainLooper()).post(new Runnable() {
+								@Override
+								public void run() {
+									if(pl != null) {
+										pl.error(e.getMessage().toString());
+									}
+								}
+							});
+						}
+					}
+					
+					
+					
+				}
+			}).start();
 		
+		}
 		
 		
 	}
+	
+	
+	
     
 }
