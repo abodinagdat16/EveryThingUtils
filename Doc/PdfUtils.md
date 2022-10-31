@@ -193,8 +193,8 @@ public void error(String errorDetails) {
 }
 });
 
-//other things are the same as PdfUtils ..
- you can get pages count ... page bitmap .
+/*other things are the same as PdfUtils ..
+ you can get pages count ... page bitmap .*/
  
  imageview1.setImageBitmap(pu.getPage((int)YourNumber);
  
