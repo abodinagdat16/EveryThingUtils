@@ -37,6 +37,7 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import java.io.InputStream;
 import java.util.ArrayList; /* a class which is related to List Making , here we are using it to create array list of Strings */
 import java.util.Map.Entry;
 import java.util.Map;
@@ -284,6 +285,70 @@ public class ImageUtils {
         
         
     }
+	
+	public void setFromInputStream(InputStream is) {
+		bitmap = BitmapFactory.decodeStream(is,null,bf());
+	}
+	
+	
+	public void setFromInputStream(InputStream is , BitmapTasks bt) {
+		if(bt != null) {
+			bt.loading();
+		}
+		
+		
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				
+				try {
+					
+					setFromInputStream(is);
+					
+					new Handler(Looper.getMainLooper()).post(new Runnable() {
+						@Override
+						public void run() {
+							if(bt != null) {
+								bt.done();
+							}
+						}
+					});
+					
+					} catch(Exception e) {
+					
+					new Handler(Looper.getMainLooper()).post(new Runnable() {
+						@Override
+						public void run() {
+							if(bt != null) {
+								bt.error(e.getMessage().toString());
+							}
+						}
+					});
+					
+					
+					
+					
+				}
+				
+				
+				
+			}
+		}).start();
+		
+		
+		
+	}
+	
+	public InputStream getInputStream() throws Exception {
+		String folder = context.getCacheDir().getAbsolutePath();
+		save(folder,"temp",100);
+		if(!folder.endsWith("/")) {
+			folder = folder + "/";
+		}
+		return new java.io.FileInputStream(new File(folder+"temp"));
+	}
+	
+	
     
     /*not supported currently*/
     
