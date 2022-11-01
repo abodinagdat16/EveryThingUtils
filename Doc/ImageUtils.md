@@ -170,6 +170,19 @@ public void error(String error) {
 }
 });
 
+
+
+
+
+```
+
+
+> how to convert Image Being Edited Into Input Stream!
+
+``` java
+
+YourInputStream = iu.getInputStream();
+
 ```
 
 > how to get the bitmap (so you can get the result every time)
