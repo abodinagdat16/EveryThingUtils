@@ -142,6 +142,36 @@ public void error(String error) {
 
 ```
 
+> how to set from input stream
+
+``` java
+try {
+
+iu.setFromInputStream(YourInputStream);
+
+} catch(Exception e) {
+
+}
+
+//or you can load without slow running + with events
+
+iu.setFromInputStream(YourInputStream,new com.android.prime.arab.ware.everythingutils.listeners.BitmapTasks() {
+@Override
+public void loading() {
+//loaded
+}
+@Override
+public void done() {
+//done
+}
+@Override
+public void error(String error) {
+//error
+}
+});
+
+```
+
 > how to get the bitmap (so you can get the result every time)
 Here we will put it into ImageView widget,  just as example
 
