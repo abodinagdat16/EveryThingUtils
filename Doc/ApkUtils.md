@@ -23,7 +23,7 @@ apk.setApkPath(path);
 
 ``` java
 
-apk.setFromInputStream(YourInputStream);
+apk.setInputStreamAsApk(YourInputStream);
 
 ```
 
