@@ -44,6 +44,23 @@ public void error(String errorDetails) {
 }
 });
 
+//to set the pdf from InputStream (No Storage Permissions Required)
+
+pu.setFromInputStream(YourInputStream,new PdfUtils.PdfLoader() {
+@Override
+public void done() {
+//done
+}
+@Override
+public void loading() {
+//loading
+}
+@Override
+public void error(String errorDetails) {
+//get the errorDetails String
+}
+});
+
 //if you want from resources
 pu.setFromResources(R.raw.YourPdfFileNameInRawResourceFolder,new PdfUtils.PdfLoader() {
 @Override
