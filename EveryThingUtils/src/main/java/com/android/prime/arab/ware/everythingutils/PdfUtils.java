@@ -280,6 +280,10 @@ public class PdfUtils {
 		setFromResources(context.getResources().getIdentifier(name,folder,context.getPackageName()),pl);
 	}
 	
+	public void setFromInputStream(InputStream is , PdfLoading pl) {
+		setFromAssets2(is,pl);
+	}
+	
 	public Bitmap getPage(int page) {
 		
 		Rpage = PR.openPage(page);

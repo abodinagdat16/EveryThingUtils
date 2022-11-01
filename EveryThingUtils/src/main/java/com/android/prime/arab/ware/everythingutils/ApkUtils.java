@@ -16,7 +16,7 @@ Happy coding everyone ... I hope this class was helpful!
 
 
 
-//package arabware.file;
+//package com.android.prime.arab.ware.everythingutils;
 
 
 package com.android.prime.arab.ware.everythingutils;
@@ -30,6 +30,8 @@ import android.app.Activity; /* the base class of an activity */
 import android.app.Fragment; /* the base class of a fragment */
 import android.app.DialogFragment; /* the base class of a dialog fragment */
 import android.graphics.drawable.Drawable; /* this class for drawing the icon */
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.lang.String; /* the String class */
 import android.os.Build; /* User Device Info */
 import java.util.ArrayList; /* This Class Can Contains List Of String values */
@@ -159,6 +161,32 @@ public class ApkUtils {
         fromPackage = false;
         doSomething();
     }
+	
+	/*
+	
+	if you choose this , you dont need to use MANAGE_EXTERNAL_STORAGE PERMISSION
+	
+	you will convert your file to input stream
+	
+	it does not need any permission ! NOT EVEN NORMAL STORAGE PERMISSIONS
+	
+	*/
+	
+	public void setInputStreamAsApk(InputStream is) throws Exception {
+		InputStream cacheApk = is;
+		FileOutputStream output = null;
+		File myFile = new File(cntx.getCacheDir(),"temp.apk");
+		output = new java.io.FileOutputStream(myFile);
+		byte[] buffer = new byte[1024];
+		int a = 0;
+		while ((a = cacheApk.read(buffer)) != -1) {
+			output.write(buffer, 0, a);
+		}
+		cacheApk.close();
+		output.close();
+		setApkPath(myFile.getAbsolutePath());
+	}
+	
     
     /*
     you have to YES YOU HAVE TO , add the QUERY_ALL_PACKAGES permission
