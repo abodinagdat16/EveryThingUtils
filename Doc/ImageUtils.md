@@ -1,7 +1,8 @@
 ## Full Guide To Image Utils Class 
 ### This Class Can Get Info And Edit An Image With Many Options
 #### the class codes are easy to write and use
-##### You Must Currently use this library as java files only because downloading it by implementation code in gradle is not the latest , I am facing some problems on uploading latest library so download the java files and build them in your way , YOUR IDE MUST SUPPORT ANDROID 33 SDK IN ORDER TO NOT GETTING ERRORS
+
+
 > how to create an ImageUtils? , just pass the Context of activity or fragment or dialog fragment or service or BroadcastReceiver....
 ``` java
 
