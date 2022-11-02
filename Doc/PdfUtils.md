@@ -12,7 +12,7 @@ private PdfUtils pu;
 pu = new PdfUtils(YourContext); //YourContext is the context like MainActivity.this or FragmentName.this.getContext()
 
 //if you want to load from assets
-pu.setFromAssets(YourStringValueOfAssetsFileNameOrFilePath,new PdfUtils.PdfLoader() {
+pu.setFromAssets(YourStringValueOfAssetsFileNameOrFilePath,new PdfUtils.PdfLoading() {
 @Override
 public void done() {
 //done
@@ -29,7 +29,7 @@ public void error(String errorDetails) {
 
 //if you want from a file path then
 
-pu.setFromFile(new java.io.File(YourFilePathString),new PdfUtils.PdfLoader() {
+pu.setFromFile(new java.io.File(YourFilePathString),new PdfUtils.PdfLoading() {
 @Override
 public void done() {
 //done
@@ -46,7 +46,7 @@ public void error(String errorDetails) {
 
 //to set the pdf from InputStream (No Storage Permissions Required)
 
-pu.setFromInputStream(YourInputStream,new PdfUtils.PdfLoader() {
+pu.setFromInputStream(YourInputStream,new PdfUtils.PdfLoading() {
 @Override
 public void done() {
 //done
@@ -62,7 +62,7 @@ public void error(String errorDetails) {
 });
 
 //if you want from resources
-pu.setFromResources(R.raw.YourPdfFileNameInRawResourceFolder,new PdfUtils.PdfLoader() {
+pu.setFromResources(R.raw.YourPdfFileNameInRawResourceFolder,new PdfUtils.PdfLoading() {
 @Override
 public void done() {
 //done
@@ -79,7 +79,7 @@ public void error(String errorDetails) {
 
 //if you want to load from resource as string and not integer number (R + something)
 
-pu.setFromResources(StringValueOfFolderName,StringValueOfFileName,new PdfUtils.PdfLoader() {
+pu.setFromResources(StringValueOfFolderName,StringValueOfFileName,new PdfUtils.PdfLoading() {
 @Override
 public void done() {
 //done
@@ -195,7 +195,7 @@ pc.addBitmapsAtFirst(YourBitmapArrayList);
 
 //to save the pdf
 
-pc.save(new PdfUtils.PdfLoader() {
+pc.save(new PdfUtils.PdfLoading() {
 @Override
 public void done() {
 //done
