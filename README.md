@@ -18,7 +18,7 @@ allprojects {
 #### Step 2. Add the dependency
 ```java
 dependencies {
-implementation 'com.github.abodinagdat16:EveryThingUtils:v1.2'
+implementation 'com.github.abodinagdat16:EveryThingUtils:v1.3'
 }
 ```
 
