@@ -31,8 +31,12 @@ implementation 'com.github.abodinagdat16:EveryThingUtils:v1.3'
 
 #  Usage
 
+[FileUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/FileUtils.md)
+
+
 [ApkUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/ApkUtils.md)
 
 [ImageUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/ImageUtils.md)
 
 [PdfUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/PdfUtils.md)
+
