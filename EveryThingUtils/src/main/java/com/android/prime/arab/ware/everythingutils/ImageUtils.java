@@ -16,8 +16,14 @@ Sketchup and others : about 5%
 package com.android.prime.arab.ware.everythingutils;
 
 
+import android.app.Activity;
 import android.content.Context; /*the most important class in every android device , without this
 class no android device can do any thing, just one word , the brain of apps? */
+import android.util.TypedValue;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import java.io.File; /*the class which is used to manage files but google are killing it
 year by year , so in android 14 or 15 , may be , it will be fully deprecated, currently android/data folder
 is only inaccessible on android 11 and up by using that class (you can use DocumenmFile SAF...) */
@@ -101,20 +107,20 @@ public class ImageUtils {
     
     
     
-    public void setFromFile(File file) throws Exception {
+    public void setFromFile(File file) throws Throwable {
         
         if(file.exists()) {
             if(!file.isFile()) {
-                throw new RuntimeException(new Exception("you can not get bitmap of a folder , you must choose the image file and not a folder..."));
+                throw new Throwable("you can not get bitmap of a folder , you must choose the image file and not a folder...");
             }
         } else {
-            throw new RuntimeException(new Exception("your path does not exist.make sure you are getting bitmap of a valid file"));
+            throw new Throwable("your path does not exist.make sure you are getting bitmap of a valid file");
         }
         
         bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(),bf());
     }
     
-    public void setFromFile(File file , BitmapTasks bt) {
+    public void setFromFile(File file , BitmapTasks bt) throws Throwable {
         
         if(bt != null) {
             bt.loading();
@@ -138,7 +144,7 @@ public class ImageUtils {
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -167,11 +173,11 @@ public class ImageUtils {
     
     
     
-    public void setFromResources(int resource) throws Exception {
+    public void setFromResources(int resource) throws Throwable {
         bitmap = BitmapFactory.decodeResource(context.getResources(),resource,bf());
     }
     
-    public void setFromResources(int resource , BitmapTasks bt) {
+    public void setFromResources(int resource , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -194,7 +200,7 @@ public class ImageUtils {
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -220,15 +226,15 @@ public class ImageUtils {
     }
     
     
-    public void setFromResources(String resourceName , String resourceFolder) throws Exception {
+    public void setFromResources(String resourceName , String resourceFolder) throws Throwable {
         setFromResources(context.getResources().getIdentifier(resourceName,resourceFolder, context.getPackageName()));
     }
     
-    public void setFromResource(String resourceName , String resourceFolder , BitmapTasks bt) {
+    public void setFromResource(String resourceName , String resourceFolder , BitmapTasks bt) throws Throwable {
         setFromResources(context.getResources().getIdentifier(resourceName,resourceFolder, context.getPackageName()),bt);
     }
     
-    public void setFromAssets(String assets) throws IOException {
+    public void setFromAssets(String assets) throws Throwable {
         
         
         
@@ -238,7 +244,7 @@ public class ImageUtils {
         
     }
     
-    public void setFromAssets(String assets , BitmapTasks bt) {
+    public void setFromAssets(String assets , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -261,7 +267,7 @@ public class ImageUtils {
                         }
                     });
                 
-                } catch(IOException e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -286,12 +292,12 @@ public class ImageUtils {
         
     }
 	
-	public void setFromInputStream(InputStream is) {
+	public void setFromInputStream(InputStream is) throws Throwable {
 		bitmap = BitmapFactory.decodeStream(is,null,bf());
 	}
 	
 	
-	public void setFromInputStream(InputStream is , BitmapTasks bt) {
+	public void setFromInputStream(InputStream is , BitmapTasks bt) throws Throwable {
 		if(bt != null) {
 			bt.loading();
 		}
@@ -314,7 +320,7 @@ public class ImageUtils {
 						}
 					});
 					
-					} catch(Exception e) {
+					} catch(Throwable e) {
 					
 					new Handler(Looper.getMainLooper()).post(new Runnable() {
 						@Override
@@ -339,7 +345,7 @@ public class ImageUtils {
 		
 	}
 	
-	public InputStream getInputStream() throws Exception {
+	public InputStream getInputStream() throws Throwable {
 		String folder = context.getCacheDir().getAbsolutePath();
 		save(folder,"temp",100);
 		if(!folder.endsWith("/")) {
@@ -360,18 +366,18 @@ public class ImageUtils {
     
     */
     
-    public void rotate(int a) {
+    public void rotate(int a) throws Throwable {
         
         
         
         
         
         if(bitmap == null) {
-            throw new RuntimeException(new Exception("you must load an image or bitmap first"));
+            throw new Throwable("you must load an image or bitmap first");
         }
         
         if(a > 360 || a < 0) {
-            throw new RuntimeException(new Exception("you can not set the angle or less than zero or to higher than 360 degrees"));
+            throw new Throwable("you can not set the angle or less than zero or to higher than 360 degrees");
         }
         
         
@@ -385,7 +391,7 @@ public class ImageUtils {
         
     }
     
-    public void rotate(int a , BitmapTasks bt) {
+    public void rotate(int a , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -408,7 +414,7 @@ public class ImageUtils {
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -434,23 +440,23 @@ public class ImageUtils {
     }
     
     
-    private Matrix getRotate(Matrix matrix, int angle) {
+    private Matrix getRotate(Matrix matrix, int angle) throws Throwable {
         matrix.postRotate(angle);
         return matrix;
     }
     
     
-    public int getWidthPx() {
+    public int getWidthPx() throws Throwable {
         if(bitmap == null) {
-            throw new RuntimeException(new Exception("you must load an image or bitmap first"));
+            throw new Throwable("you must load an image or bitmap first");
         }
         
         return (int)bitmap.getWidth();
     }
     
-    public int getHeightPx() {
+    public int getHeightPx() throws Throwable {
         if(bitmap == null) {
-            throw new RuntimeException(new Exception("you must load an image or bitmap first"));
+            throw new Throwable("you must load an image or bitmap first");
         }
         
         return (int)bitmap.getHeight();
@@ -458,10 +464,10 @@ public class ImageUtils {
     
     
     
-    public void flipHorizontally() {
+    public void flipHorizontally() throws Throwable {
         
         if(bitmap == null) {
-            throw new RuntimeException(new Exception("you must load an image or bitmap first"));
+            throw new Throwable("you must load an image or bitmap first");
         }
         
         bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),flip(true,new Matrix()),true);
@@ -470,7 +476,7 @@ public class ImageUtils {
         }
     }
     
-    public void flipHorizontally(BitmapTasks bt) {
+    public void flipHorizontally(BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -493,7 +499,7 @@ public class ImageUtils {
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -518,10 +524,10 @@ public class ImageUtils {
         
     }
     
-    public void flipVertically() {
+    public void flipVertically() throws Throwable {
         
         if(bitmap == null) {
-            throw new RuntimeException(new Exception("you must load an image or bitmap first"));
+            throw new Throwable("you must load an image or bitmap first");
         }
         
         bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),flip(false,new Matrix()),true);
@@ -531,7 +537,7 @@ public class ImageUtils {
         }
     }
     
-    public void flipVertically(BitmapTasks bt) {
+    public void flipVertically(BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -554,7 +560,7 @@ public class ImageUtils {
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -580,7 +586,7 @@ public class ImageUtils {
     }
     
     
-    private Matrix flip(boolean horizontal , Matrix m) {
+    private Matrix flip(boolean horizontal , Matrix m) throws Throwable {
         
         if(horizontal) {
             
@@ -601,7 +607,7 @@ public class ImageUtils {
     
     
     
-    public void setContrast(int contrast) {
+    public void setContrast(int contrast) throws Throwable {
         
         Bitmap temp = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(),bitmap.getConfig());
         
@@ -631,7 +637,7 @@ public class ImageUtils {
         
     }
     
-    public void setContrast(int contrast , BitmapTasks bt) {
+    public void setContrast(int contrast , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -654,7 +660,7 @@ public class ImageUtils {
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -680,7 +686,7 @@ public class ImageUtils {
     }
     
     
-    public void setBrightness(int brightness) {
+    public void setBrightness(int brightness) throws Throwable {
         
         //here we are creating a temporary copy of your bitmap
         
@@ -713,7 +719,7 @@ public class ImageUtils {
         
     }
     
-    public void setBrightness(int brightness , BitmapTasks bt) {
+    public void setBrightness(int brightness , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -736,7 +742,7 @@ public class ImageUtils {
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -761,7 +767,7 @@ public class ImageUtils {
         
     }
     
-    public void setAlpha(int alpha) {
+    public void setAlpha(int alpha) throws Throwable {
         
         //you will create a temporary copy of your bitmap
         
@@ -796,7 +802,7 @@ public class ImageUtils {
         
     }
     
-    public void setAlpha(int alpha , BitmapTasks bt) {
+    public void setAlpha(int alpha , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -819,7 +825,7 @@ public class ImageUtils {
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -854,7 +860,7 @@ public class ImageUtils {
     
     */
     
-    public void setFilter(String type) {
+    public void setFilter(String type) throws Throwable {
         
         
         if(type.equals("negative")||type=="negative") {
@@ -930,7 +936,7 @@ public class ImageUtils {
         
     }
     
-    public void setFilter(String filter , BitmapTasks bt) {
+    public void setFilter(String filter , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -953,7 +959,7 @@ public class ImageUtils {
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -979,7 +985,7 @@ public class ImageUtils {
     }
     
     
-    public void blur(int blurValue) {
+    public void blur(int blurValue) throws Throwable {
         
         
         if((getWidthPx() > 8) && (getHeightPx() > 8)) {
@@ -1005,7 +1011,7 @@ public class ImageUtils {
         
     }
     
-    public void blur(int blurValue , BitmapTasks bt) {
+    public void blur(int blurValue , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -1028,7 +1034,7 @@ public class ImageUtils {
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -1056,20 +1062,20 @@ public class ImageUtils {
     
     
     
-    public int getMostUsedColor() throws Exception {
+    public int getMostUsedColor() throws Throwable {
         
         if((getWidthPx()*getHeightPx())>=2147483647) {
-            throw new Exception("you can not load big images pixels-array , this is not BECASE of my LIBRARY but the java itself , yeah because there is a limit on the Arrays , 2,147,483,647 items , if more , throws an exception (OutOfMemory).");
+            throw new Throwable("you can not load big images pixels-array , this is not BECASE of my LIBRARY but the java itself , yeah because there is a limit on the Arrays , 2,147,483,647 items , if more , throws an exception (OutOfMemory).");
         }
         
         return getMostRepeatedInteger();
         
     }
     
-    public String getMostUsedColorAsString() throws Exception {
+    public String getMostUsedColorAsString() throws Throwable {
         
         if((getWidthPx()*getHeightPx())>=2147483647) {
-            throw new Exception("you can not load big images pixels-array , this is not BECASE of my LIBRARY but the java itself , yeah because there is a limit on the Arrays , 2,147,483,647 items , if more , throws an exception (OutOfMemory).");
+            throw new Throwable("you can not load big images pixels-array , this is not BECASE of my LIBRARY but the java itself , yeah because there is a limit on the Arrays , 2,147,483,647 items , if more , throws an exception (OutOfMemory).");
         }
         
         return "#" + Integer.toHexString(getMostUsedColor()).substring(0);
@@ -1086,7 +1092,7 @@ public class ImageUtils {
     */
     
     
-    public int getMostRepeatedInteger() throws Exception {
+    public int getMostRepeatedInteger() throws Throwable {
         return Integer.valueOf(((Integer) ((Entry) ((Map) getPixels().stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))).entrySet().stream().max(new RandomClass()).get()).getKey()).intValue()).intValue();
     }
 
@@ -1115,14 +1121,14 @@ public class ImageUtils {
     
     
     
-    public void setWidthAndHeightPx(int width , int height) {
+    public void setWidthAndHeightPx(int width , int height) throws Throwable {
         
         if(width == 0 || width < 0) {
-            throw new RuntimeException(new Exception("the width of image can not be less than zero or zero"));
+            throw new RuntimeException(new Throwable("the width of image can not be less than zero or zero"));
         }
         
         if(height == 0 || height < 0) {
-            throw new RuntimeException(new Exception("the height of image can not be less than zero or zero"));
+            throw new RuntimeException(new Throwable("the height of image can not be less than zero or zero"));
         }
         
         try {
@@ -1131,7 +1137,7 @@ public class ImageUtils {
         
         bitmap.reconfigure(width,height,bitmap.getConfig());
         
-        } catch(Exception e) {
+        } catch(Throwable e) {
             
             Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
             
@@ -1151,7 +1157,7 @@ public class ImageUtils {
         
     }
     
-    public void setWidthAndHeightPx(int w , int h , BitmapTasks bt) {
+    public void setWidthAndHeightPx(int w , int h , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -1174,7 +1180,7 @@ public class ImageUtils {
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -1202,7 +1208,7 @@ public class ImageUtils {
     
     
     
-    public void addBitmap(Bitmap b , int x , int y , int waterMarkWidth , int waterMarkHeight , boolean movingFromCenter) {
+    public void addBitmap(Bitmap b , int x , int y , int waterMarkWidth , int waterMarkHeight , boolean movingFromCenter) throws Throwable {
         
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
@@ -1235,7 +1241,7 @@ public class ImageUtils {
         
     }
     
-    public void addBitmap(Bitmap b , int x , int y , int waterMarkWidth , int waterMarkHeight , boolean movingFromCenter , BitmapTasks bt) {
+    public void addBitmap(Bitmap b , int x , int y , int waterMarkWidth , int waterMarkHeight , boolean movingFromCenter , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -1258,7 +1264,7 @@ public class ImageUtils {
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -1284,14 +1290,14 @@ public class ImageUtils {
     }
     
     
-    public ArrayList<Integer> getPixels() throws Exception{
+    public ArrayList<Integer> getPixels() throws Throwable{
         
         bitmap = bitmap.copy(bitmap.getConfig(),true);
         
         ArrayList<Integer> data = new ArrayList<>();
         
         if((bitmap.getHeight()*bitmap.getWidth())>=Integer.MAX_VALUE) {
-            throw new Exception("you can not load big images pixels-array , this is not BECASE of my LIBRARY but the java itself , yeah because there is a limit on the Arrays , 2,147,483,647 items , if more , throws an exception (OutOfMemory).");
+            throw new Throwable("you can not load big images pixels-array , this is not BECASE of my LIBRARY but the java itself , yeah because there is a limit on the Arrays , 2,147,483,647 items , if more , throws an exception (OutOfMemory).");
         } else {
         
         for(int random = 0; random < bitmap.getHeight(); random++) {
@@ -1313,7 +1319,7 @@ public class ImageUtils {
     
     
     
-    public void changeColor(int color , int color2) throws Exception {
+    public void changeColor(int color , int color2) throws Throwable {
         
         
         
@@ -1351,7 +1357,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         
     }
     
-    public void changeColor(int color1 , int color2 , BitmapTasks bt) {
+    public void changeColor(int color1 , int color2 , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -1374,7 +1380,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -1401,13 +1407,13 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
     
     
 
-    public void changeColor(String color , String color2) throws Exception {
+    public void changeColor(String color , String color2) throws Throwable {
     
     changeColor(Color.parseColor(color),Color.parseColor(color2));
     
     }
     
-    public void changeColor(String color1 , String color2 , BitmapTasks bt) {
+    public void changeColor(String color1 , String color2 , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -1430,7 +1436,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -1456,15 +1462,15 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
     }
     
     
-    public int getColorAt(int x , int y) {
+    public int getColorAt(int x , int y) throws Throwable {
         return bitmap.getPixel(x,y);
     }
     
-    public String getColorStringAt(int x , int y) {
+    public String getColorStringAt(int x , int y) throws Throwable {
         return "#" + Integer.toHexString(getColorAt(x,y)).substring(0);
     }
     
-    public int getColorCount(int color) {
+    public int getColorCount(int color) throws Throwable {
         
         int count = 0;
         
@@ -1485,14 +1491,14 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         
     }
     
-    public int getColorCount(String color) {
+    public int getColorCount(String color) throws Throwable {
         
         return getColorCount(Color.parseColor(color));
         
     }
     
     
-    public void setPixel(int x , int y , int color) {
+    public void setPixel(int x , int y , int color) throws Throwable {
         
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
@@ -1509,22 +1515,23 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         
     }
     
-    public void setPixel(int x , int y , String color) {
+    public void setPixel(int x , int y , String color) throws Throwable {
         setPixel(x,y,Color.parseColor(color));
     }
     
     
-    public void save(String folder , String name , int quality) throws Exception {
+    public void save(String folder , String name , int quality) throws Throwable {
         
         if(!(new File(folder).exists())) {
-            throw new RuntimeException(new Exception("unable to find the folder to save the image"));
+            throw new Throwable("unable to find the folder to save the image");
         } else {
             if(new File(folder).isDirectory()) {
                 if(!folder.endsWith("/")) {
                     folder = folder + "/";
                 }
             } else {
-                throw new RuntimeException(new Exception("folder String must be a folder path and not a file path"));
+                throw new Throwable("folder String must be a folder path and not a file path");
+				
             }
         }
         
@@ -1539,14 +1546,14 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
             }
             
-        } catch (Exception e) {
+        } catch (Throwable e) {
             throw e;
         }
         
         
     }
     
-    public void save(String folder , String name , int quality , BitmapTasks bt) {
+    public void save(String folder , String name , int quality , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -1569,7 +1576,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -1596,7 +1603,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
     
     
     
-    public void crop(int fromX , int toX , int fromY , int toY) {
+    public void crop(int fromX , int toX , int fromY , int toY) throws Throwable {
         
         Bitmap result = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(),bitmap.getConfig());
         
@@ -1654,7 +1661,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         
     }
     
-    public void crop(int fromX , int toX , int fromY , int toY , BitmapTasks bt) {
+    public void crop(int fromX , int toX , int fromY , int toY , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -1677,7 +1684,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -1703,7 +1710,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
     }
     
     
-    public void hide(int fromX , int toX , int fromY , int toY) {
+    public void hide(int fromX , int toX , int fromY , int toY) throws Throwable {
         
         Bitmap temp = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(),bitmap.getConfig());
         
@@ -1732,7 +1739,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         
     }
     
-    public void hide(int fromX , int toX , int fromY , int toY , BitmapTasks bt) {
+    public void hide(int fromX , int toX , int fromY , int toY , BitmapTasks bt) throws Throwable {
         if(bt != null) {
             bt.loading();
         }
@@ -1755,7 +1762,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -1781,7 +1788,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
     }
     
     
-    private Bitmap hideP(int fromX , int toX , int fromY , int toY) {
+    private Bitmap hideP(int fromX , int toX , int fromY , int toY) throws Throwable {
         
         Bitmap temp = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(),bitmap.getConfig());
         
@@ -1802,7 +1809,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
     }
     
     
-    public void addWaterMarkTopCenter(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
+    public void addWaterMarkTopCenter(Bitmap b , int waterMarkWidth , int waterMarkHeight) throws Throwable {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
         Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
@@ -1829,7 +1836,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
     
     
     
-    public void addWaterMarkTopRight(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
+    public void addWaterMarkTopRight(Bitmap b , int waterMarkWidth , int waterMarkHeight) throws Throwable {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
         Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
@@ -1854,7 +1861,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         }
     }
     
-    public void addWaterMarkTopLeft(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
+    public void addWaterMarkTopLeft(Bitmap b , int waterMarkWidth , int waterMarkHeight) throws Throwable {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
         Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
@@ -1879,7 +1886,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         }
     }
     
-    public void addWaterMarkBottomCenter(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
+    public void addWaterMarkBottomCenter(Bitmap b , int waterMarkWidth , int waterMarkHeight) throws Throwable {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
         Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
@@ -1904,7 +1911,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         }
     }
     
-    public void addWaterMarkBottomRight(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
+    public void addWaterMarkBottomRight(Bitmap b , int waterMarkWidth , int waterMarkHeight) throws Throwable {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
         Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
@@ -1929,7 +1936,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         }
     }
     
-    public void addWaterMarkBottomLeft(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
+    public void addWaterMarkBottomLeft(Bitmap b , int waterMarkWidth , int waterMarkHeight) throws Throwable {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
         Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
@@ -1954,7 +1961,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         }
     }
     
-    public void addWaterMarkCenter(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
+    public void addWaterMarkCenter(Bitmap b , int waterMarkWidth , int waterMarkHeight) throws Throwable {
         
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
@@ -1982,7 +1989,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         
     }
     
-    public void addWaterMarkCenterRight(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
+    public void addWaterMarkCenterRight(Bitmap b , int waterMarkWidth , int waterMarkHeight) throws Throwable {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
         Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
@@ -2006,7 +2013,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         }
     }
     
-    public void addWaterMarkCenterLeft(Bitmap b , int waterMarkWidth , int waterMarkHeight) {
+    public void addWaterMarkCenterLeft(Bitmap b , int waterMarkWidth , int waterMarkHeight) throws Throwable {
         Bitmap tmp = bitmap.copy(bitmap.getConfig(),true);
         
         Bitmap tmp2 = changeWidthAndHeight(b,waterMarkWidth,waterMarkHeight);
@@ -2054,7 +2061,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -2102,7 +2109,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -2150,7 +2157,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -2198,7 +2205,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -2246,7 +2253,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -2294,7 +2301,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -2342,7 +2349,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -2390,7 +2397,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -2438,7 +2445,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         }
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
@@ -2464,23 +2471,23 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
     }
     
     
-    public static Bitmap getBitmapFromFile(File file) throws Exception {
+    public static Bitmap getBitmapFromFile(File file) throws Throwable {
         if(file.exists()) {
             if(!file.isFile()) {
-                throw new RuntimeException(new Exception("you can not get bitmap of a folder , you must choose the image file and not a folder..."));
+                throw new Throwable("you can not get bitmap of a folder , you must choose the image file and not a folder...");
             }
         } else {
-            throw new RuntimeException(new Exception("your path does not exist.make sure you are getting bitmap of a valid file"));
+            throw new Throwable("your path does not exist.make sure you are getting bitmap of a valid file");
         }
         
         return BitmapFactory.decodeFile(file.getAbsolutePath(),bf());
     }
     
-    public static Bitmap getBitmapFromAssets(Context c , String assets) throws IOException {
+    public static Bitmap getBitmapFromAssets(Context c , String assets) throws Throwable {
         return BitmapFactory.decodeStream(c.getAssets().open(assets),null,bf());
     }
     
-    public static Bitmap getBitmapFromResource(Context c , int resource) throws Exception {
+    public static Bitmap getBitmapFromResource(Context c , int resource) throws Throwable {
         return BitmapFactory.decodeResource(c.getResources(),resource,bf());
     }
     
@@ -2491,16 +2498,16 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
     public static Bitmap changeWidthAndHeight(Bitmap b , int w , int h) {
         
         if(b==null) {
-            throw new RuntimeException(new Exception("your bitmap of image is null (empty , no data) make sure you loaded a real image correctly"));
+            throw new RuntimeException(new Throwable("your bitmap of image is null (empty , no data) make sure you loaded a real image correctly"));
         }
         
         
         if(w == 0 || w < 0) {
-            throw new RuntimeException(new Exception("the width of image can not be less than zero or zero"));
+            throw new RuntimeException(new Throwable("the width of image can not be less than zero or zero"));
         }
         
         if(h == 0 || h < 0) {
-            throw new RuntimeException(new Exception("the height of image can not be less than zero or zero"));
+            throw new RuntimeException(new Throwable("the height of image can not be less than zero or zero"));
         }
         
         try {
@@ -2509,7 +2516,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         
         b.reconfigure(w,h,b.getConfig());
         
-        } catch(Exception e) {
+        } catch(Throwable e) {
             
             Bitmap tmp = b.copy(b.getConfig(),true);
             
@@ -2550,6 +2557,14 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
     public static String getStringColorFromRGB(int red , int green , int blue) {
         return "#" + Integer.toHexString(getColorFromRGB(red,green,blue)).substring(0);
     }
+	
+	public static int getColorFromRGB(int alpha , int red , int green , int blue) {
+		return Color.argb(alpha,red, green, blue);
+	}
+	
+	public static String getStringColorFromRGB(int alpha , int red , int green , int blue) {
+		return "#" + Integer.toHexString(getColorFromRGB(alpha,red,green,blue)).substring(0);
+	}
     
     
     public void deleteHistory() {
@@ -2579,11 +2594,7 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
     
     
     
-    public String getBitmap() throws Exception {
-        
-        if((getWidthPx()*getHeightPx())>=2147483647) {
-            throw new Exception("you can not load big images pixels-array , this is not BECASE of my LIBRARY but the java itself , yeah because there is a limit on the Arrays , 2,147,483,647 items , if more , throws an exception (OutOfMemory).");
-        }
+    public String getBitmap() throws Throwable {
         
         return getPixels().toString();
         
@@ -2594,10 +2605,10 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
     
     
     
-    public void setBitmap(String BitMapData) throws Exception {
+    public void setBitmap(String BitMapData) throws Throwable {
         
         if((BitMapData.length()-(BitMapData.replace(",","").length()+1)) >= 2147483647) {
-            throw new Exception("your String equals or more than 2147483647 items so as the java itself does not allow more than that in an ArrayList , this function will never be working");
+            throw new Throwable("your String equals or more than 2147483647 items so as the java itself does not allow more than that in an ArrayList , this function will never be working");
         }
         
         BitMapData = BitMapData.replace("[","").replace("]","").replace(" ","");
@@ -2637,20 +2648,29 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
                         @Override
                         public void run() {
                             if(bt != null) {
+								
                         bt.done();
+						
                     }
+					
                         }
+						
                     });
                 
-                } catch(Exception e) {
+                } catch(Throwable e) {
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
+							
                             if(bt != null) {
+								
                         bt.error(e.getMessage().toString());
+						
                     }
+					
                         }
+						
                     });
                     
                     
@@ -2691,17 +2711,34 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
     
     
     
-    public void setBitmap(View view) {
-        
-        Bitmap temp = Bitmap.createBitmap(view.getMeasuredWidth(),view.getMeasuredHeight(),Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(temp);
-        view.draw(c);
-        bitmap = temp.copy(temp.getConfig(),true);
-        if(bitmaps != null) {
-            bitmaps.add(bitmap);
-        }
-        
-    }
+    
+public void setBitmap(View view) {
+	
+	Bitmap temp = Bitmap.createBitmap(view.getWidth(),view.getHeight(),Bitmap.Config.ARGB_8888);
+	Canvas c = new Canvas(temp);
+	view.draw(c);
+	bitmap = temp.copy(temp.getConfig(),true);
+	if(bitmaps != null) {
+		bitmaps.add(bitmap);
+	}
+	
+}
+
+
+public void setBitmap(View view , int width , int height) {
+	
+	Bitmap temp = Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+	Canvas c = new Canvas(temp);
+	view.draw(c);
+	bitmap = temp.copy(temp.getConfig(),true);
+	if(bitmaps != null) {
+		bitmaps.add(bitmap);
+	}
+	
+}
+
+	
+	
     
     public static Bitmap getBitmap(View view) {
         Bitmap temp = Bitmap.createBitmap(view.getWidth(),view.getHeight(),Bitmap.Config.ARGB_8888);
@@ -2709,6 +2746,18 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         view.draw(c);
         return temp;
     }
+	
+	public static Bitmap getBitmap(View view , int width , int height) {
+		Bitmap temp = Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+		
+		Canvas c = new Canvas(temp);
+		
+		
+		view.draw(c);
+		
+		
+		return temp;
+	}
     
     public void setBitmap(ImageView iv) {
         try {
@@ -2764,8 +2813,14 @@ temp.setPixels(pixels,0,getWidthPx(),0, 0, getWidthPx(),random);
         
         int[] pixels = new int[widthPx*heightPx];
 
+
+
 for(int i = 0; i < (widthPx*heightPx); i++) {
+	
+	
     pixels[i] = color;
+	
+	
 }
 
 
@@ -2776,11 +2831,21 @@ temp.setPixels(pixels,0,widthPx,0, 0, widthPx,heightPx);
     }
     
     public void recreateOrSetNewBitmap(int widthPx , int heightPx , int color) {
+		
+		
         Bitmap temp = Bitmap.createBitmap(widthPx,heightPx,Bitmap.Config.ARGB_8888);
+		
+		
         if(bitmap == null) {
         
+		
+		
         temp = temp.copy(temp.getConfig(),true);
+		
+		
         } else {
+			
+			
             temp = bitmap.copy(bitmap.getConfig(),true);
         }
         
@@ -2789,7 +2854,11 @@ temp.setPixels(pixels,0,widthPx,0, 0, widthPx,heightPx);
         int[] pixels = new int[widthPx*heightPx];
 
 for(int i = 0; i < (widthPx*heightPx); i++) {
+	
+	
     pixels[i] = color;
+	
+	
 }
 
 
@@ -2798,148 +2867,139 @@ temp.setPixels(pixels,0,widthPx,0, 0, widthPx,heightPx);
         bitmap = temp;
         
         if(bitmaps != null) {
+			
+			
             bitmaps.add(bitmap);
+			
+			
         }
         
     }
     
     public static Bitmap createNewBitmap(int w , int h , String color) {
+		
+		
         return createNewBitmap(w,h,Color.parseColor(color));
+		
+		
     }
     
     public void recreateOrSetNewBitmap(int w , int h , String color) {
+		
+		
         recreateOrSetNewBitmap(w,h,Color.parseColor(color));
+		
+		
+		
     }
     
     
     public static final BitmapFactory.Options bf() {
+		
+		
         BitmapFactory.Options random = new BitmapFactory.Options();
+		
+		
         random.inMutable = true;
+		
+		
         return random;
+		
+		
     }
-    
-    
-    /*
-    
-    public void setFromUrl(String url , LoadingInterface li) {
-        
-        if(li != null) {
-            
-            li.loading();
-            
-        }
-        
-        try {
-            
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    
-                    try {
-                    
-                    
-                    java.io.InputStream is = new java.net.URL(url).openStream();
-                    byte[] bs = new byte[is.available()];
-                    is.read(bs);
-                    BitmapFactory.Options bo = new BitmapFactory.Options();
-                    bo.inMutable = true;
-                    bitmap = BitmapFactory.decodeByteArray(bs,0,bs.length,bo);
-                    
-                    if(is == null) {
-                        throw new RuntimeException("your input stream is null");
-                    }
-                    if(bs == null) {
-                        throw new RuntimeException("your byte array is null");
-                    }
-                    
-                    if(bitmap == null) {
-                        HttpURLConnection huc = ((HttpURLConnection)new java.net.URL(url).openConnection());
-                        huc.setDoInput(true);
-                        huc.connect();
-                        java.io.InputStream is2 = huc.getInputStream();
-                        
-                    byte[] bs2 = new byte[is2.available()];
-                    is2.read(bs2);
-                    BitmapFactory.Options bo2 = new BitmapFactory.Options();
-                    bo2.inMutable = true;
-                    bitmap = BitmapFactory.decodeByteArray(bs2,0,bs2.length,bo2);
-                    }
-                    
-                    if(li != null) {
-            
-          new android.os.Handler(android.os.Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    
-                    
-                    
-                    li.done();
 
-                }
-            });
-            
-            
-            
-        }
-                    
-                    
-                    } catch(Exception e) {
-                        
-                        new android.os.Handler(android.os.Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    
-                    if(li != null) {
-                        li.error(e.getMessage().toString());
-                    }
-
-                }
-            });
-                    }
-        
-        
-                }
-            }).start();
-            
-        
-        
-        
-        } catch(Exception e) {
-            
-            if(li != null) {
-                
-                li.error(e.getMessage().toString());
-                
-            }
-            
-        }
-        
-        
-        
-        
-    }
     
     
-    public interface LoadingInterface {
-        public void done();
-        public void loading();
-        public void error(String error);
-    }
-    
-    
-    
-    
-    
-    public static Bitmap getBitmapFromText(String text , int color , int backgroundColor , int size , int width , int height , String font) {
-        
-    }
-    
-    public static Bitmap getBitmapFromText(String text , int color , int backgroundColor , int size , int width , int height , int font) {
-        
-    }
-    
-    */
-    
-    
+	
+	public void setBitmap(Bitmap b) {
+		
+		
+		this.bitmap = b;
+		
+		
+	}
+	
+	public ArrayList<Integer> getCustomPixels(int fromX , int toX , int fromY , int toY) throws Throwable {
+		
+		
+		ArrayList<Integer> tp = new ArrayList<>();
+		
+		for(int a = fromX; a < toX; a++) {
+			
+			
+			for(int b = fromY; b < toY; b++) {
+				
+				try {
+				
+				tp.add(getColorAt(a,b));
+				
+				} catch(Throwable e) {
+					throw e;
+				}
+				
+			}
+			
+		}
+		
+		
+		return tp;
+		
+		
+	}
+	
+	
+	public void setPixels(ArrayList<Integer> tp , int width , int height) {
+		
+		int[] i = new int[tp.size()];
+		
+		for(int a = 0; a < tp.size(); a++) {
+			i[a] = tp.get(a);
+		}
+		
+		
+		
+		this.bitmap.setPixels(i,0,width,0,0,width,height);
+		
+		
+		
+	}
+	
+	public void erase(int color) {
+		
+		
+		
+		
+		bitmap.eraseColor(color);
+		
+		
+		
+	}
+	
+	public void erase(String color) {
+		
+		
+		erase(Color.parseColor(color));
+		
+		
+	}
+	
+	public void erase(int red , int green , int blue) {
+		
+		
+		
+		erase(getColorFromRGB(red,green,blue));
+		
+		
+		
+	}
+	
+	public void erase(int alpha , int red , int green , int blue) {
+		
+		
+		erase(getColorFromRGB(alpha,red,green,blue));
+		
+		
+	}
+	
     
 }

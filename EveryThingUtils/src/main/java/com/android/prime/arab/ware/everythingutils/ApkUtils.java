@@ -35,6 +35,7 @@ import java.util.ArrayList; /* This Class Can Contains List Of String values */
 import java.io.File; /* file management class */
 import android.content.pm.Signature; /* a class that can check and get the signature of an app file or installed app*/
 import android.content.pm.PackageManager; /* the class which GIVE THE POWER TO THIS PROJECT */
+import java.util.Arrays;
 import java.util.List; /* a list that contain values. like ArrayList but not ArrayList :) */
 import android.content.pm.ActivityInfo; /* the class that is used to get full info about an activity of an app */
 import android.content.pm.ProviderInfo; /* the class that is used to get full info about a provider of an app */
@@ -49,6 +50,10 @@ import java.text.SimpleDateFormat; /* just a temporary & fast way to convert Dat
 public class ApkUtils {
 
 	//fields
+	
+	//sdk level
+	
+	public static int sdk = Build.VERSION.SDK_INT;
 
 	//two important fields
 
@@ -125,6 +130,8 @@ public class ApkUtils {
 	/*if the developer (YOU) wanted to get info of an app from package and not file path*/
 	private boolean fromPackage;
 	private boolean temp = false;
+
+	public static String[] s2;
 
 	//constructors
 
@@ -441,7 +448,7 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -453,7 +460,7 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -461,7 +468,7 @@ public class ApkUtils {
 
 			drawable = ai.loadIcon(cntx.getPackageManager());
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -469,7 +476,7 @@ public class ApkUtils {
 
 			name = "" + ai.loadLabel(cntx.getPackageManager());
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -477,13 +484,13 @@ public class ApkUtils {
 
 			versionName = pckgInfo.versionName;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
 		try {
 
-			if (Build.VERSION.SDK_INT >= 28) {
+			if (sdk >= 28) {
 
 				versionCode = (int) pckgInfo.getLongVersionCode();
 
@@ -493,7 +500,7 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 			versionCode = pckgInfo.versionCode;
 
@@ -503,7 +510,7 @@ public class ApkUtils {
 
 			pkg = pckgInfo.packageName;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			throw new RuntimeException(new Exception(e));
 		}
 
@@ -511,15 +518,16 @@ public class ApkUtils {
 
 			targetSdkVersion = ai.targetSdkVersion;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
 		try {
 
 			minSdkVersion = ai.minSdkVersion;
+			
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -527,7 +535,7 @@ public class ApkUtils {
 
 			dataDir = ai.dataDir;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -535,7 +543,7 @@ public class ApkUtils {
 
 			manageSpaceActivityName = ai.manageSpaceActivityName;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -543,7 +551,7 @@ public class ApkUtils {
 
 			className = ai.className;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -551,7 +559,7 @@ public class ApkUtils {
 
 			uid = ai.uid;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -566,7 +574,7 @@ public class ApkUtils {
 
 			init(0);
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -574,7 +582,7 @@ public class ApkUtils {
 
 			publicSourceDir = ai.publicSourceDir;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -582,7 +590,7 @@ public class ApkUtils {
 
 			sourceDir = ai.sourceDir;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -590,13 +598,13 @@ public class ApkUtils {
 
 			installedVerName = pckgInfo.versionName;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
 		try {
 
-			if (Build.VERSION.SDK_INT >= 28) {
+			if (sdk >= 28) {
 
 				versionCode = (int) pckgInfo.getLongVersionCode();
 
@@ -606,7 +614,7 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			versionCode = pckgInfo.versionCode;
 		}
 
@@ -614,7 +622,7 @@ public class ApkUtils {
 
 			installedTargetSdk = ai.targetSdkVersion;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -622,7 +630,7 @@ public class ApkUtils {
 
 			installedMinSdk = ai.minSdkVersion;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -630,7 +638,7 @@ public class ApkUtils {
 
 			installedName = "" + ai.loadLabel(cntx.getPackageManager());
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -646,7 +654,7 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -662,7 +670,7 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -678,7 +686,7 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -703,7 +711,7 @@ public class ApkUtils {
 				SHA256 = getSignture("SHA256");
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -724,7 +732,7 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -744,7 +752,7 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -764,7 +772,7 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -784,7 +792,7 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -804,7 +812,7 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -824,7 +832,7 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 		}
 
@@ -837,11 +845,11 @@ public class ApkUtils {
 	//don't care about these, they are available at ArabWareFileManager class but I took them for a reason
 
 	private boolean isAndroid11() {
-		return (android.os.Build.VERSION.SDK_INT == 30 || android.os.Build.VERSION.SDK_INT > 30);
+		return (sdk == 30 || sdk > 30);
 	}
 
 	private boolean isAndroid6() {
-		return (android.os.Build.VERSION.SDK_INT == 23 || android.os.Build.VERSION.SDK_INT > 23);
+		return (sdk == 23 || sdk > 23);
 	}
 
 	private boolean isFullAccessFiles(Context c) {
@@ -876,13 +884,13 @@ public class ApkUtils {
 
 		try {
 
-			if (Build.VERSION.SDK_INT < 28) {
+			if (sdk < 28) {
 
 				packageInfo = cntx.getPackageManager().getPackageArchiveInfo(path, PackageManager.GET_SIGNATURES);
 
 			} else {
 
-				if (Build.VERSION.SDK_INT >= 33) {
+				if (sdk >= 33) {
 
 					packageInfo = cntx.getPackageManager().getPackageArchiveInfo(path,
 							PackageManager.PackageInfoFlags.of(PackageManager.GET_SIGNING_CERTIFICATES));
@@ -908,7 +916,7 @@ public class ApkUtils {
 
 				}
 
-			} catch (Exception e) {
+			} catch (Throwable e) {
 
 				signatures = packageInfo.signingInfo.getApkContentsSigners();
 
@@ -920,8 +928,8 @@ public class ApkUtils {
 				// check is matches hardcoded value
 				return shaType;
 			}
-		} catch (Exception e) {
-			throw new RuntimeException(new Exception(e));
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
 		}
 
 		return "";
@@ -931,13 +939,13 @@ public class ApkUtils {
 
 		try {
 
-			if (Build.VERSION.SDK_INT < 28) {
+			if (sdk < 28) {
 
 				packageInfo = cntx.getPackageManager().getPackageInfo(pkgName, PackageManager.GET_SIGNATURES);
 
 			} else {
 
-				if (Build.VERSION.SDK_INT >= 33) {
+				if (sdk >= 33) {
 
 					packageInfo = cntx.getPackageManager().getPackageInfo(pkgName,
 							PackageManager.PackageInfoFlags.of(PackageManager.GET_SIGNING_CERTIFICATES));
@@ -963,7 +971,7 @@ public class ApkUtils {
 
 				}
 
-			} catch (Exception e) {
+			} catch (Throwable e) {
 
 				signatures = packageInfo.signingInfo.getApkContentsSigners();
 
@@ -975,8 +983,8 @@ public class ApkUtils {
 				// check is matches hardcoded value
 				return shaType;
 			}
-		} catch (Exception e) {
-			throw new RuntimeException(new Exception(e));
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
 		}
 
 		return "";
@@ -989,8 +997,8 @@ public class ApkUtils {
 			digest.update(sig);
 			byte[] hashtext = digest.digest();
 			return bytes_To_Hex_(hashtext);
-		} catch (java.security.NoSuchAlgorithmException e) {
-			throw new RuntimeException(new java.security.NoSuchAlgorithmException(e));
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
 		}
 
 	}
@@ -1020,7 +1028,7 @@ public class ApkUtils {
 
 			/*Android 13 and up*/
 
-			if (android.os.Build.VERSION.SDK_INT >= 33) {
+			if (sdk >= 33) {
 
 				listn = c.getPackageManager()
 						.getInstalledPackages(PackageManager.PackageInfoFlags.of(PackageManager.GET_META_DATA));
@@ -1044,13 +1052,13 @@ public class ApkUtils {
 				}
 			}
 
-		} catch (Exception e) {
-			throw new RuntimeException(new Exception(
+		} catch (Throwable e) {
+			throw new RuntimeException(new Throwable(
 					"system refused to give your app permission to list apps , are you sure your app has QUERY_ALL_PACKAGES permission?"));
 		}
 
 		if (tempList == null) {
-			throw new RuntimeException(new Exception(
+			throw new RuntimeException(new Throwable(
 					"system refused to give your app permission to list apps , are you sure your app has QUERY_ALL_PACKAGES permission?"));
 		}
 
@@ -1068,7 +1076,7 @@ public class ApkUtils {
 
 			/*Android 13 and up*/
 
-			if (android.os.Build.VERSION.SDK_INT >= 33) {
+			if (sdk >= 33) {
 
 				listn = c.getPackageManager()
 						.getInstalledPackages(PackageManager.PackageInfoFlags.of(PackageManager.GET_META_DATA));
@@ -1092,13 +1100,13 @@ public class ApkUtils {
 				}
 			}
 
-		} catch (Exception e) {
-			throw new RuntimeException(new Exception(
+		} catch (Throwable e) {
+			throw new RuntimeException(new Throwable(
 					"system refused to give your app permission to list apps , are you sure your app has QUERY_ALL_PACKAGES permission?"));
 		}
 
 		if (tempList == null) {
-			throw new RuntimeException(new Exception(
+			throw new RuntimeException(new Throwable(
 					"system refused to give your app permission to list apps , are you sure your app has QUERY_ALL_PACKAGES permission?"));
 		}
 
@@ -1118,7 +1126,7 @@ public class ApkUtils {
 
 			/*Android 13 and up*/
 
-			if (android.os.Build.VERSION.SDK_INT >= 33) {
+			if (sdk >= 33) {
 
 				listn = c.getPackageManager()
 						.getInstalledPackages(PackageManager.PackageInfoFlags.of(PackageManager.GET_META_DATA));
@@ -1137,13 +1145,13 @@ public class ApkUtils {
 
 			}
 
-		} catch (Exception e) {
-			throw new RuntimeException(new Exception(
+		} catch (Throwable e) {
+			throw new RuntimeException(new Throwable(
 					"system refused to give your app permission to list apps , are you sure your app has QUERY_ALL_PACKAGES permission?"));
 		}
 
 		if (tempList == null) {
-			throw new RuntimeException(new Exception(
+			throw new RuntimeException(new Throwable(
 					"system refused to give your app permission to list apps , are you sure your app has QUERY_ALL_PACKAGES permission?"));
 		}
 
@@ -1177,13 +1185,13 @@ public class ApkUtils {
 
 			if (fromPackage) {
 
-				if (Build.VERSION.SDK_INT < 28) {
+				if (sdk < 28) {
 
 					pckgInfo = cntx.getPackageManager().getPackageInfo(pkg, mode);
 
 				} else {
 
-					if (Build.VERSION.SDK_INT >= 33) {
+					if (sdk >= 33) {
 
 						pckgInfo = cntx.getPackageManager().getPackageInfo(pkg,
 								PackageManager.PackageInfoFlags.of(mode));
@@ -1198,13 +1206,13 @@ public class ApkUtils {
 
 			} else {
 
-				if (Build.VERSION.SDK_INT < 28) {
+				if (sdk < 28) {
 
 					pckgInfo = cntx.getPackageManager().getPackageArchiveInfo(path, mode);
 
 				} else {
 
-					if (Build.VERSION.SDK_INT >= 33) {
+					if (sdk >= 33) {
 
 						pckgInfo = cntx.getPackageManager().getPackageArchiveInfo(path,
 								PackageManager.PackageInfoFlags.of(mode));
@@ -1221,7 +1229,7 @@ public class ApkUtils {
 
 			ai = pckgInfo.applicationInfo;
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 
 			throw new RuntimeException(e);
 
@@ -1229,242 +1237,248 @@ public class ApkUtils {
 
 	}
 
-	
-	
 	// do they work?
-	
+
 	//test them
-	
-	public static ArrayList<String> getInstalledUserAppPackages(Context c ,int sorting_mode) {
-	    ArrayList<String> sort = getInstalledUserAppPackages(c);
-		sort(c,sort,sorting_mode);
+
+	public static ArrayList<String> getInstalledUserAppPackages(Context c, int sorting_mode) {
+		ArrayList<String> sort = getInstalledUserAppPackages(c);
+		sort(c, sort, sorting_mode);
 		return sort;
 	}
-	
-	public static ArrayList<String> getInstalledSystemAppPackages(Context c , int sorting_mode) {
-	    ArrayList<String> sort = getInstalledSystemAppPackages(c);
-		sort(c,sort,sorting_mode);
+
+	public static ArrayList<String> getInstalledSystemAppPackages(Context c, int sorting_mode) {
+		ArrayList<String> sort = getInstalledSystemAppPackages(c);
+		sort(c, sort, sorting_mode);
 		return sort;
 	}
-	
-	public static ArrayList<String> getInstalledAppPackages(Context c , int sorting_mode) {
-	    ArrayList<String> sort = getInstalledAppPackages(c);
-		sort(c,sort,sorting_mode);
+
+	public static ArrayList<String> getInstalledAppPackages(Context c, int sorting_mode) {
+		ArrayList<String> sort = getInstalledAppPackages(c);
+		sort(c, sort, sorting_mode);
 		return sort;
 	}
-	
-	public static void sort(Context c , ArrayList<String> s , int mode) {
-		
-		if(mode == SORT_BY_NAME_UP_TO_DOWN) {
-			
-			String[] s2 = new String[s.size()];
-			
-			for(int a = 0; a < s.size(); a++) {
+
+	public static void sort(Context c, ArrayList<String> s, int mode) {
+
+		if (mode == SORT_BY_NAME_UP_TO_DOWN) {
+
+			s2 = new String[s.size()];
+
+			for (int a = 0; a < s.size(); a++) {
 				s2[a] = s.get(a);
 			}
-			
+
 			java.util.Arrays.sort(s2, new java.util.Comparator<String>() {
 				@Override
 				public int compare(String a, String b) {
-					
+
 					ApkUtils au = new ApkUtils(c);
 					au.setPackageName(a);
 					ApkUtils au2 = new ApkUtils(c);
 					au2.setPackageName(b);
-					
+
 					return au.getName().compareTo(au2.getName());
-					
+
 				}
 			});
 		}
-		
-		if(mode == SORT_BY_NAME_DOWN_TO_UP) {
-			String[] s2 = new String[s.size()];
-			
-			for(int a = 0; a < s.size(); a++) {
+
+		if (mode == SORT_BY_NAME_DOWN_TO_UP) {
+			s2 = new String[s.size()];
+
+			for (int a = 0; a < s.size(); a++) {
 				s2[a] = s.get(a);
 			}
-			
+
 			java.util.Arrays.sort(s2, new java.util.Comparator<String>() {
 				@Override
 				public int compare(String a, String b) {
-					
+
 					ApkUtils au = new ApkUtils(c);
 					au.setPackageName(a);
 					ApkUtils au2 = new ApkUtils(c);
 					au2.setPackageName(b);
-					
+
 					return au2.getName().compareTo(au.getName());
 				}
 			});
 		}
-		
-		if(mode == SORT_BY_INSTALL_TIME_UP_TO_DOWN) {
-			String[] s2 = new String[s.size()];
-			
-			for(int a = 0; a < s.size(); a++) {
+
+		if (mode == SORT_BY_INSTALL_TIME_UP_TO_DOWN) {
+			s2 = new String[s.size()];
+
+			for (int a = 0; a < s.size(); a++) {
 				s2[a] = s.get(a);
 			}
-			
+
 			java.util.Arrays.sort(s2, new java.util.Comparator<String>() {
 				@Override
 				public int compare(String a, String b) {
-					
+
 					ApkUtils au = new ApkUtils(c);
 					au.setPackageName(a);
 					ApkUtils au2 = new ApkUtils(c);
 					au2.setPackageName(b);
-					if(au.firstInstallTime() > au2.firstInstallTime()) {
+					if (au.firstInstallTime() > au2.firstInstallTime()) {
 						return 1;
-					} else if(au.firstInstallTime() < au2.firstInstallTime()) {
-						return -1;
-					} else {
-						return 0;
 					}
-					
-					
+
+					if (au.firstInstallTime() < au2.firstInstallTime()) {
+						return -1;
+					}
+
+					return 0;
+
 				}
 			});
 		}
-		
-		if(mode == SORT_BY_INSTALL_TIME_DOWN_TO_UP) {
-			String[] s2 = new String[s.size()];
-			
-			for(int a = 0; a < s.size(); a++) {
+
+		if (mode == SORT_BY_INSTALL_TIME_DOWN_TO_UP) {
+			s2 = new String[s.size()];
+
+			for (int a = 0; a < s.size(); a++) {
 				s2[a] = s.get(a);
 			}
-			
+
 			java.util.Arrays.sort(s2, new java.util.Comparator<String>() {
 				@Override
 				public int compare(String a, String b) {
-					
+
 					ApkUtils au = new ApkUtils(c);
 					au.setPackageName(a);
 					ApkUtils au2 = new ApkUtils(c);
 					au2.setPackageName(b);
-					if(au.firstInstallTime() > au2.firstInstallTime()) {
+					if (au.firstInstallTime() > au2.firstInstallTime()) {
 						return -1;
-						} else if(au.firstInstallTime() < au2.firstInstallTime()) {
-						return 1;
-						} else {
-						return 0;
 					}
-				}
-			});
-		}
-		
-		if(mode == SORT_BY_LAST_UPDATE_UP_TO_DOWN) {
-			String[] s2 = new String[s.size()];
-			
-			for(int a = 0; a < s.size(); a++) {
-				s2[a] = s.get(a);
-			}
-			
-			java.util.Arrays.sort(s2, new java.util.Comparator<String>() {
-				@Override
-				public int compare(String a, String b) {
-					
-					ApkUtils au = new ApkUtils(c);
-					au.setPackageName(a);
-					ApkUtils au2 = new ApkUtils(c);
-					au2.setPackageName(b);
-					if(au.lastUpdateTime() > au2.lastUpdateTime()) {
+
+					if (au.firstInstallTime() < au2.firstInstallTime()) {
 						return 1;
-						} else if(au.lastUpdateTime() < au2.lastUpdateTime()) {
-						return -1;
-						} else {
-						return 0;
 					}
-					
-				}
-			});
-		}
-		
-		if(mode == SORT_BY_LAST_UPDATE_DOWN_TO_UP) {
-			String[] s2 = new String[s.size()];
-			
-			for(int a = 0; a < s.size(); a++) {
-				s2[a] = s.get(a);
-			}
-			
-			java.util.Arrays.sort(s2, new java.util.Comparator<String>() {
-				@Override
-				public int compare(String a, String b) {
-					
-					ApkUtils au = new ApkUtils(c);
-					au.setPackageName(a);
-					ApkUtils au2 = new ApkUtils(c);
-					au2.setPackageName(b);
-					if(au.lastUpdateTime() > au2.lastUpdateTime()) {
-						return -1;
-						} else if(au.lastUpdateTime() < au2.lastUpdateTime()) {
-						return 1;
-						} else {
-						return 0;
-					}
-				}
-			});
-		}
-		
-		if(mode == SORT_BY_SIZE_UP_TO_DOWN) {
-			String[] s2 = new String[s.size()];
-			
-			for(int a = 0; a < s.size(); a++) {
-				s2[a] = s.get(a);
-			}
-			
-			java.util.Arrays.sort(s2, new java.util.Comparator<String>() {
-				@Override
-				public int compare(String a, String b) {
-					
-					ApkUtils au = new ApkUtils(c);
-					au.setPackageName(a);
-					ApkUtils au2 = new ApkUtils(c);
-					au2.setPackageName(b);
-					if(new File(au.getPublicSourceDir()).length() > new File(au2.getPublicSourceDir()).length()) {
-						return 1;
-						} else if(new File(au.getPublicSourceDir()).length() < new File(au2.getPublicSourceDir()).length()) {
-						return -1;
-						} else {
-						return 0;
-					}
-				}
-			});
-		}
-		
-		
-		if(mode == SORT_BY_SIZE_DOWN_TO_UP) {
-			String[] s2 = new String[s.size()];
-			
-			for(int a = 0; a < s.size(); a++) {
-				s2[a] = s.get(a);
-			}
-			
-			java.util.Arrays.sort(s2, new java.util.Comparator<String>() {
-				@Override
-				public int compare(String a, String b) {
-					
-				ApkUtils au = new ApkUtils(c);
-				au.setPackageName(a);
-				ApkUtils au2 = new ApkUtils(c);
-				au2.setPackageName(b);
-				if(new File(au.getPublicSourceDir()).length() > new File(au2.getPublicSourceDir()).length()) {
-					return -1;
-					} else if(new File(au.getPublicSourceDir()).length() < new File(au2.getPublicSourceDir()).length()) {
-					return 1;
-					} else {
+
 					return 0;
 				}
+			});
+		}
+
+		if (mode == SORT_BY_LAST_UPDATE_UP_TO_DOWN) {
+			s2 = new String[s.size()];
+
+			for (int a = 0; a < s.size(); a++) {
+				s2[a] = s.get(a);
+			}
+
+			java.util.Arrays.sort(s2, new java.util.Comparator<String>() {
+				@Override
+				public int compare(String a, String b) {
+
+					ApkUtils au = new ApkUtils(c);
+					au.setPackageName(a);
+					ApkUtils au2 = new ApkUtils(c);
+					au2.setPackageName(b);
+					if (au.lastUpdateTime() > au2.lastUpdateTime()) {
+						return 1;
+					}
+					if (au.lastUpdateTime() < au2.lastUpdateTime()) {
+						return -1;
+					}
+					return 0;
+
 				}
 			});
 		}
-		
-		
-		
+
+		if (mode == SORT_BY_LAST_UPDATE_DOWN_TO_UP) {
+			s2 = new String[s.size()];
+
+			for (int a = 0; a < s.size(); a++) {
+				s2[a] = s.get(a);
+			}
+
+			java.util.Arrays.sort(s2, new java.util.Comparator<String>() {
+				@Override
+				public int compare(String a, String b) {
+
+					ApkUtils au = new ApkUtils(c);
+					au.setPackageName(a);
+					ApkUtils au2 = new ApkUtils(c);
+					au2.setPackageName(b);
+					if (au.lastUpdateTime() > au2.lastUpdateTime()) {
+						return -1;
+					}
+					if (au.lastUpdateTime() < au2.lastUpdateTime()) {
+						return 1;
+					}
+					return 0;
+				}
+			});
+		}
+
+		if (mode == SORT_BY_SIZE_UP_TO_DOWN) {
+			s2 = new String[s.size()];
+
+			for (int a = 0; a < s.size(); a++) {
+				s2[a] = s.get(a);
+			}
+
+			java.util.Arrays.sort(s2, new java.util.Comparator<String>() {
+				@Override
+				public int compare(String a, String b) {
+
+					ApkUtils au = new ApkUtils(c);
+					au.setPackageName(a);
+					ApkUtils au2 = new ApkUtils(c);
+					au2.setPackageName(b);
+					if (new File(au.getPublicSourceDir()).length() > new File(au2.getPublicSourceDir()).length()) {
+						return 1;
+					}
+
+					if (new File(au.getPublicSourceDir()).length() < new File(au2.getPublicSourceDir()).length()) {
+						return -1;
+					}
+
+					return 0;
+
+				}
+			});
+		}
+
+		if (mode == SORT_BY_SIZE_DOWN_TO_UP) {
+			s2 = new String[s.size()];
+
+			for (int a = 0; a < s.size(); a++) {
+				s2[a] = s.get(a);
+			}
+
+			java.util.Arrays.sort(s2, new java.util.Comparator<String>() {
+				@Override
+				public int compare(String a, String b) {
+
+					ApkUtils au = new ApkUtils(c);
+					au.setPackageName(a);
+					ApkUtils au2 = new ApkUtils(c);
+					au2.setPackageName(b);
+					if (new File(au.getPublicSourceDir()).length() > new File(au2.getPublicSourceDir()).length()) {
+						return -1;
+					}
+
+					if (new File(au.getPublicSourceDir()).length() < new File(au2.getPublicSourceDir()).length()) {
+						return 1;
+					}
+
+					return 0;
+				}
+			});
+
+		}
+
+		s.clear();
+		for (int a = 0; a < s2.length; a++) {
+			s.add(s2[a]);
+		}
+
 	}
-	
-	
-	
 
 	public static final int SORT_BY_INSTALL_TIME_UP_TO_DOWN = 0;
 	public static final int SORT_BY_INSTALL_TIME_DOWN_TO_UP = 1;
@@ -1474,5 +1488,33 @@ public class ApkUtils {
 	public static final int SORT_BY_SIZE_DOWN_TO_UP = 5;
 	public static final int SORT_BY_LAST_UPDATE_UP_TO_DOWN = 6;
 	public static final int SORT_BY_LAST_UPDATE_DOWN_TO_UP = 7;
+
+	public static void openAppSettings(Context c, String packageName) {
+
+	}
+
+	public static void openApp(Context c, String packageName) {
+
+	}
+
+	public static void uninstallApp(Context c, String packageName) {
+
+	}
+
+	public static void shareApp(Context c, String packageName) {
+
+	}
+
+	public static void saveApp(Context c, String packageName, String whereAndAsWhat) {
+
+	}
+
+	public static boolean isInstalled(Context c, String packageName) {
+		return true;
+	}
+
+	public static boolean isSigned(Context c, File file) {
+		return true;
+	}
 
 }
