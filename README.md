@@ -1,7 +1,7 @@
 # EveryThingUtils
 It is a FileUtil/AnyThingElseUtils to help developers to work with files / or any thing else , please read the usage and warnings to know how it works.
 <br><br>
-[![](https://jitpack.io/v/abodinagdat16/FileWareUtils.svg)](https://jitpack.io/#abodinagdat16/FileWareUtils)
+[![](https://jitpack.io/v/abodinagdat16/EveryThingUtils.svg)](https://jitpack.io/#abodinagdat16/EveryThingUtils)
 ### Configure
 ### Maven
 ##### Step 1. Add the JitPack repository to your build file
@@ -18,7 +18,7 @@ allprojects {
 #### Step 2. Add the dependency
 ```java
 dependencies {
-implementation 'com.github.abodinagdat16:EveryThingUtils:v1.3'
+implementation 'com.github.abodinagdat16:EveryThingUtils:v1.4'
 }
 ```
 
