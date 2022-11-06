@@ -20,6 +20,7 @@ package com.android.prime.arab.ware.everythingutils;
 
 //imports of classes
 
+import android.content.Intent; /* opening an app or an activity */
 import android.content.Context; /*Context Class*/
 import android.content.pm.PackageInfo; /*Package Info from installed or file apk*/
 import android.content.pm.ApplicationInfo; /*same as above but with more info*/
@@ -27,10 +28,16 @@ import android.app.Activity; /* the base class of an activity */
 import android.app.Fragment; /* the base class of a fragment */
 import android.app.DialogFragment; /* the base class of a dialog fragment */
 import android.graphics.drawable.Drawable; /* this class for drawing the icon */
+import android.net.Uri;
+import android.provider.Settings;
+import com.android.prime.arab.ware.everythingutils.listeners.CopyTask;
+import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.lang.String; /* the String class */
 import android.os.Build; /* User Device Info */
+import java.security.cert.X509Certificate;
+import java.security.cert.CertificateFactory;
 import java.util.ArrayList; /* This Class Can Contains List Of String values */
 import java.io.File; /* file management class */
 import android.content.pm.Signature; /* a class that can check and get the signature of an app file or installed app*/
@@ -119,6 +126,8 @@ public class ApkUtils {
 	private Signature[] signatures;
 	/*permissions of the app from file or package*/
 	public ArrayList<String> permissions = new ArrayList<>();
+	public ArrayList<String> granted_permissions = new ArrayList<>();
+	public ArrayList<String> denied_permissions = new ArrayList<>();
 	/*activities of the app from file or package*/
 	public ArrayList<String> activities = new ArrayList<>();
 	/*services of the app from file or package*/
@@ -127,6 +136,16 @@ public class ApkUtils {
 	public ArrayList<String> receivers = new ArrayList<>();
 	/*providers of the app from file or package*/
 	public ArrayList<String> providers = new ArrayList<>();
+	/*signature info*/
+	public String issuer = "null";
+	public String serial = "null";
+	public String created = "null";
+	public String ends = "null";
+	public long CREATED = 0;
+	public long ENDS = 0;
+	public String md5 = "null";
+	
+	
 	/*if the developer (YOU) wanted to get info of an app from package and not file path*/
 	private boolean fromPackage;
 	private boolean temp = false;
@@ -741,6 +760,7 @@ public class ApkUtils {
 			init(PackageManager.GET_PERMISSIONS);
 
 			permissions = new ArrayList<>();
+			granted_permissions = new ArrayList<>();
 
 			if (pckgInfo.requestedPermissions != null) {
 
@@ -750,6 +770,22 @@ public class ApkUtils {
 
 				}
 
+			}
+			
+			/*
+			checking granted and denied permissions credits
+			https://stackoverflow.com/a/37294804/17808329
+			*/
+			if(pckgInfo.requestedPermissionsFlags != null) {
+			
+			for (int i = 0; i < pckgInfo.requestedPermissions.length; i++) {
+				if ((pckgInfo.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0 ||(pckgInfo.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED) == PackageInfo.REQUESTED_PERMISSION_GRANTED) {
+					granted_permissions.add(pckgInfo.requestedPermissions[i]);
+				} else {
+					denied_permissions.add(pckgInfo.requestedPermissions[i]);
+				}
+			}
+			
 			}
 
 		} catch (Throwable e) {
@@ -980,6 +1016,20 @@ public class ApkUtils {
 			for (android.content.pm.Signature signature : signatures) {
 
 				String shaType = getSHAOfType_(signature.toByteArray(), type);
+				
+				CertificateFactory certFactory = CertificateFactory.getInstance("X509");
+				X509Certificate x509Cert = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(signature.toByteArray()));
+				
+				serial = ""+x509Cert.getSerialNumber();
+				issuer = x509Cert.getIssuerDN() + "";
+				ends = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(x509Cert.getNotAfter());
+				created = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(x509Cert.getNotBefore());
+				CREATED = x509Cert.getNotBefore().getTime();
+				ENDS = x509Cert.getNotAfter().getTime();
+				md5 = getSHAOfType_(signature.toByteArray(),"MD5");
+				
+				
+				
 				// check is matches hardcoded value
 				return shaType;
 			}
@@ -1490,30 +1540,60 @@ public class ApkUtils {
 	public static final int SORT_BY_LAST_UPDATE_DOWN_TO_UP = 7;
 
 	public static void openAppSettings(Context c, String packageName) {
-
+		
+		c.startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:" + packageName)));
+		
 	}
+	
+	
 
-	public static void openApp(Context c, String packageName) {
-
+	public static void openApp(Context c, String packageName , String activityPackageAndName) {
+		
+		c.startActivity(it(new Intent(Intent.ACTION_MAIN),packageName,activityPackageAndName));
+		
+	}
+	
+	public static Intent it(Intent intent , String p , String c) {
+		intent.addCategory(Intent.CATEGORY_LAUNCHER);
+		intent.setPackage(p);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.setClassName(p, c);
+		return intent;
 	}
 
 	public static void uninstallApp(Context c, String packageName) {
-
+		c.startActivity(new Intent(Intent.ACTION_DELETE,Uri.parse("package:"+packageName)));
 	}
 
-	public static void shareApp(Context c, String packageName) {
-
+	public static void shareApp(Context c, String packageName,String typeMime , String message) {
+		ApkUtils au = new ApkUtils(c);
+		au.setPackageName(packageName);
+		new ArabWareFileManager(au.getPublicSourceDir()).share(c,typeMime,message);
 	}
 
-	public static void saveApp(Context c, String packageName, String whereAndAsWhat) {
-
+	public static void saveApp(Context c, String packageName, String where , CopyTask ct) {
+		
+		
+		ApkUtils au = new ApkUtils(c);
+		au.setPackageName(packageName);
+		new ArabWareFileManager(au.getPublicSourceDir()).copy(where,ct);
 	}
 
 	public static boolean isInstalled(Context c, String packageName) {
-		return true;
+		ApkUtils au = new ApkUtils(c);
+		au.setPackageName(packageName);
+		if(new java.io.File(au.getPublicSourceDir()).exists()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public static boolean isSigned(Context c, File file) {
+		ApkUtils au = new ApkUtils(c);
+		if(au.signatures == null || au.SHA1 == "null" || au.SHA256 == "null") {
+			return false;
+		}
 		return true;
 	}
 

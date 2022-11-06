@@ -145,6 +145,8 @@ public class ImageUtils {
                     });
                 
                 } catch(Throwable e) {
+					
+					
                     
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override

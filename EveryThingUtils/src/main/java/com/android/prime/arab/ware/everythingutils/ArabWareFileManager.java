@@ -36,7 +36,7 @@ TO DO LIST :
 
 */
 
-//this is the package name , you need it to access the java class like importing , import arabware.file.ArabWareFileManager;
+//this is the package name , you need it to access the java class like importing , import com.android.prime.arab.ware.everythingutils ArabWareFileManager;
 
 package com.android.prime.arab.ware.everythingutils;
 
