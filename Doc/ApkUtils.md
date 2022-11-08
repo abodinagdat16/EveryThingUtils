@@ -2,7 +2,7 @@
 ### ApkUtils is a class that can get info about apps (file path or package name) without any hard codes + it works for most (all) android versions from 5 to 13
 #### c is the context like MainActivity.this or Fragment.this.getActivity(); , path is the string path of apk file , pkg is the package name of the app , apk is the name of ApkUtils definition here
 
-> first you have to define the ApkUtils with a valid Context , I suggest an activity but it's OK to use another things
+> first you have to create the ApkUtils then initialize it with a valid Context , I suggest an activity but it's OK to use another things
 
 ``` java
 
@@ -23,7 +23,13 @@ apk.setApkPath(path);
 
 ``` java
 
+try {
+
 apk.setInputStreamAsApk(YourInputStream);
+
+} catch(Exception e) {
+//error
+}
 
 ```
 
@@ -311,7 +317,34 @@ YourLong2 = apk.lastUpdateTime();
 YourArrayListString = ApkUtils.getInstalledUserAppPackages(MainActivity.this);
 YourArrayListString2 = ApkUtils.getInstalledSystemAppPackages(MainActivity.this);
 YourArrayListString2 = ApkUtils.getInstalledAppPackages(MainActivity.this);
+
 ```
+
+> how to sort apps by name or size or first install time or last update time ?
+``` java
+//there are 8 types of sorting.
+/*
+SORT_BY_INSTALL_TIME_UP_TO_DOWN
+SORT_BY_INSTALL_TIME_DOWN_TO_UP
+SORT_BY_NAME_UP_TO_DOWN
+SORT_BY_NAME_DOWN_TO_UP
+SORT_BY_SIZE_UP_TO_DOWN
+SORT_BY_SIZE_DOWN_TO_UP
+SORT_BY_LAST_UPDATE_UP_TO_DOWN
+SORT_BY_LAST_UPDATE_DOWN_TO_UP
+*/
+//example :
+
+YourArrayListString = ApkUtils.getInstalledUserAppPackages(MainActivity.this);
+
+ApkUtils.sort(MainActivity.this,YourArrayListString,ApkUtils.SORT_BY_INSTALL_TIME_UP_TO_DOWN);
+
+//MainActivity.this ==> Your Context
+//YourArrayListString ==> Your Array List String ( or List String ) Name
+//SORT_BY_INSTALL_TIME_UP_TO_DOWN ==> sorting rule
+
+```
+
 
 > HOW TO LIST THE APK FILES IN A SPECIFIC FOLDER (AND ITS SUBFOLDERS) , IF THE TARGET ANDROID IS ANDROID 11 AND LATER THEN YOUR APP MUST HAVE MANAGE_EXTERNAL_STORAGE + GRANTED IT FROM USER
 
@@ -320,3 +353,176 @@ YourArrayListString2 = ApkUtils.getInstalledAppPackages(MainActivity.this);
 YourArrayListString = ApkUtils.getApkPaths(YourFolderString);
 
 ```
+> open an app using package name
+
+``` java
+
+ApkUtils.openApp(MainActivity.this,PackageNameAsString);
+
+```
+
+> open an app's settings using package name
+
+``` java
+ApkUtils.openAppSettings(MainActivity.this,PackageNameAsString);
+
+```
+
+> open an app's activity of an app using package name of the app and package name of activity + . + its activity name
+
+``` java
+
+ApkUtils.openApp(MainActivity.this,AppPackageName,ActivityPackageAndName); // like com.hello and com.activityPackage.ActivityName , if your Activity package name is same as app then no problem...same thing , com.hello and com.hello.ActivityName
+
+```
+
+> request uninstalling an app using package name
+
+``` java
+
+ApkUtils.uninstallApp(MainActivity.this,AppPackageName);
+
+```
+
+> share an app using package name
+
+``` java
+
+ApkUtils.share(MainActivity.this,PackageName,"*/*","your message ....");
+
+```
+
+> save an app using package name
+
+``` java
+
+ApkUtils.saveApp(MainActivity.this,PackageName,WhereToSave,new com.android.prime.arab.ware.everythingutils.listeners.CopyTask() {
+@Override
+public void done() {
+//done
+}
+@Override
+public void loading() {
+//loading
+}
+@Override
+public void progress(String file) {
+//progress
+}
+@Override
+public void error(String error) {
+//error
+}
+@Override
+public void error(ArrayList<String> errors) {
+//errors
+}
+});
+//WhereToSave ==> like storage/emulated/0/Download
+
+```
+
+> checking if the package is installed
+
+``` java
+if(ApkUtils.isInstalled(MainActivity.this,PackageName)) {
+//installed
+} else {
+//not installed
+}
+
+```
+
+> how to check if the apk file is signed
+
+``` java
+
+if(ApkUtils.isSigned(MainActivity.this,new java.io.File(PathAsString))) {
+//signed
+} else {
+//not signed
+}
+
+```
+
+## Signature Info
+
+``` java
+//get the sha1
+
+
+YourString = apk.getSHA1();
+
+//get the sha256
+
+
+YourString = apk.getSHA256();
+
+//get the sha384
+
+YourString = apk.getSHA384();
+
+// get the sha512
+
+YourString = apk.getSHA512();
+
+// get the md5
+
+YourString = apk.getMD5();
+
+// get the signature issuer
+
+YourString = apk.getSignatureIssuer();
+
+// get the signature serial
+
+YourString = apk.getSignatureSerial();
+
+// get the signature created date
+
+YourString = apk.getSignatureOfficalCreated();
+
+// get the signature ended date
+
+YourString = apk.getSignatureOfficalEnded();
+
+// get the signature created date with custom format of showing date
+
+YourString = apk.getSignatureCreated(format); //format is a String value like yyyy/MM/dd hh:mm:ss
+
+// get the signature ended date with custom format of showing date
+
+YourString = apk.getSignatureEnds(format); //format is a String value like yyyy/MM/dd hh:mm:ss
+
+// get the signature created date in milliseconds as long variable
+
+YourLongNumberVariable = apk.getSignatureCreated();
+
+// get the signature ended date in milliseconds as long variable
+
+YourLongNumberVariable = apk.getSignatureEnds();
+
+	//it gets the activities tags in the AndroidManifest.xml with thier info like isEnabled key gives android:enabled="boolean" String value ! , the available keys are isExported , isEnabled , name , and orientation (portrait or landscape or undefined value as String !)
+
+	ArrayList<HashMap<String,String>> YourListMap_ListOfHashMaps = apk.getActivitiesInfo();
+	
+
+
+	
+	//it gets the services tags in the AndroidManifest.xml with thier info like isEnabled key gives android:enabled="boolean" String value ! , the available keys are isExported , isEnabled , name
+	
+	ArrayList<HashMap<String,String>> YourListMap_ListOfHashMaps = apk.getServicesInfo();
+	
+
+
+	
+	//it gets the reciever tags in the AndroidManifest.xml with thier info like isEnabled key gives android:enabled="boolean" String value ! , the available keys are isExported , isEnabled , name
+	
+	ArrayList<HashMap<String,String>> YourListMap_ListOfHashMaps = apk.getRecieversInfo();
+	
+
+
+```
+
+
+
