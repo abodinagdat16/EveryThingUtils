@@ -42,7 +42,7 @@ public class PdfUtils {
 	public android.graphics.pdf.PdfDocument.Page page;
 	private java.io.File file;
 	private Context context;
-	private ArrayList<Bitmap> bitmaps;
+	private ArrayList<Bitmap> bitmaps = new ArrayList<>();
 	//the interface of this class
 	
 	public interface PdfLoading {
@@ -60,6 +60,8 @@ public class PdfUtils {
 	//the methods of this class
 	
 	public void setFromFile(File f , PdfLoading pl) {
+		
+		bitmaps = new ArrayList<>();
 		
 		new Thread(new Runnable() {
 			@Override
@@ -113,6 +115,7 @@ public class PdfUtils {
 	
 	public void setFromAssets(String assets , PdfLoading pl) {
 		
+		bitmaps = new ArrayList<>();
 		
 		new Thread(new Runnable() {
 			@Override
@@ -190,6 +193,7 @@ public class PdfUtils {
 	
 	private void setFromAssets2(InputStream assets , PdfLoading pl) {
 		
+		bitmaps = new ArrayList<>();
 		
 		new Thread(new Runnable() {
 			@Override
@@ -267,6 +271,9 @@ public class PdfUtils {
 	
 	public void setFromResources(int res , PdfLoading pl) {
 		try {
+			
+			bitmaps = new ArrayList<>();
+			
 			asset = context.getResources().openRawResource(res);
 			setFromAssets2(asset,pl);
 			} catch (Exception e) {
@@ -277,12 +284,15 @@ public class PdfUtils {
 	}
 	
 	public void setFromResources(String folder , String name , PdfLoading pl) {
+		
 		setFromResources(context.getResources().getIdentifier(name,folder,context.getPackageName()),pl);
 	}
 	
 	public void setFromInputStream(InputStream is , PdfLoading pl) {
 		setFromAssets2(is,pl);
 	}
+	
+	
 	
 	public Bitmap getPage(int page) {
 		
@@ -300,7 +310,8 @@ public class PdfUtils {
 	//i dont recommend using this , for big files
 	//it can throw OutOfMemory Error
 	
-	public ArrayList<Bitmap> getPages() {
+	public ArrayList<Bitmap> getPages() throws Throwable {
+		bitmaps = new ArrayList<>();
 		for(int a = 0; a < getPagesCount(); a++) {
 			bitmaps.add(getPage(a));
 		}
@@ -319,7 +330,7 @@ public class PdfUtils {
 		return getPage(page).getHeight();
 	}
 	
-	public void compresssPdf(int percent , String saveTo , PdfLoading pl) {
+	public void compresssPdf(double percent , String saveTo , PdfLoading pl) {
 		
 		if(pl != null) {
 			pl.loading();
@@ -330,19 +341,32 @@ public class PdfUtils {
 			public void run() {
 				try {
 						for(int a = 0; a < getPages().size(); a++) {
-							bitmaps.set(a,Bitmap.createScaledBitmap(getPage(a),(getPageWidth(a)/(percent/100)),(getPageHeight(a)/(percent/100)),true));
+							
+							double w = getPageWidth(a) / (percent/100);
+							if(w < 1) {
+								w = 1;
+							}
+							
+							double h = getPageHeight(a) / (percent/100);
+							if(h < 1) {
+								h = 1;
+							}
+
+							
+							bitmaps.set(a,Bitmap.createScaledBitmap(getPage(a), (int)w, (int)h , true));
 						}
 						PdfCreator pc = new PdfCreator(context , saveTo);
 						pc.setPdf(PdfUtils.this);
 						pc.save2(pl);
 					
-					} catch(Exception e) {
+					} catch(Throwable e) {
 					if(pl != null) {
 						new android.os.Handler(android.os.Looper.getMainLooper()).post(new Runnable() {
 							@Override
 							public void run() {
 								if(pl != null) {
 									pl.error(e.getMessage().toString());
+									throw new RuntimeException(e);
 								}
 							}
 						});
@@ -378,18 +402,31 @@ public class PdfUtils {
 			bitms = new ArrayList<>();
 		}
 		
-		public void setPdf(PdfUtils pu) {
+		public void setPdf(PdfUtils pu) throws Throwable {
+			bitms = new ArrayList<>();
 			pd = new android.graphics.pdf.PdfDocument();
 			bitms = new ArrayList<>();
-			bitms.addAll(pu.getPages());
+			for(int a = 0; a < pu.getPagesCount(); a++) {
+				bitms.add(pu.getPage(a));
+			}
 		}
 		
-		public void addPdf(PdfUtils pu) {
-			bitms.addAll(pu.getPages());
+		public void addPdf(PdfUtils pu) throws Throwable {
+			for(int a = 0; a < pu.getPagesCount(); a++) {
+				bitms.add(pu.getPage(a));
+			}
 		}
 		
-		public void addPdfAtFirst(PdfUtils pu) {
-			addTemporary(pu.getPages(),bitms);
+		public void addPdfAtFirst(PdfUtils pu) throws Throwable {
+			
+			ArrayList<Bitmap> temp = new ArrayList<>();
+			for(int a = 0; a < pu.getPagesCount(); a++) {
+				temp.add(pu.getPage(a));
+			}
+			
+			addTemporary(temp,bitms);
+			
+			temp.clear();
 		}
 		
 		private void addTemporary(ArrayList<Bitmap> b , ArrayList<Bitmap> b2) {
@@ -399,6 +436,7 @@ public class PdfUtils {
 		}
 		
 		public void setBitmaps(ArrayList<Bitmap> bits) {
+			bitms = new ArrayList<>();
 			bitms = bits;
 		}
 		
@@ -484,7 +522,7 @@ public class PdfUtils {
 							});
 						}
 						
-					} catch(IOException e) {
+					} catch(Throwable e) {
 						if(pl != null) {
 							new android.os.Handler(android.os.Looper.getMainLooper()).post(new Runnable() {
 								@Override
@@ -534,7 +572,7 @@ public class PdfUtils {
 							});
 						}
 						
-						} catch(IOException e) {
+						} catch(Throwable e) {
 						if(pl != null) {
 							new android.os.Handler(android.os.Looper.getMainLooper()).post(new Runnable() {
 								@Override

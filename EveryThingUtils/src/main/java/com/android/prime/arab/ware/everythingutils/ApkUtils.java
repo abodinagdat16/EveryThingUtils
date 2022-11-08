@@ -27,6 +27,7 @@ import android.content.pm.ApplicationInfo; /*same as above but with more info*/
 import android.app.Activity; /* the base class of an activity */
 import android.app.Fragment; /* the base class of a fragment */
 import android.app.DialogFragment; /* the base class of a dialog fragment */
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable; /* this class for drawing the icon */
 import android.net.Uri;
 import android.provider.Settings;
@@ -43,6 +44,7 @@ import java.io.File; /* file management class */
 import android.content.pm.Signature; /* a class that can check and get the signature of an app file or installed app*/
 import android.content.pm.PackageManager; /* the class which GIVE THE POWER TO THIS PROJECT */
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List; /* a list that contain values. like ArrayList but not ArrayList :) */
 import android.content.pm.ActivityInfo; /* the class that is used to get full info about an activity of an app */
 import android.content.pm.ProviderInfo; /* the class that is used to get full info about a provider of an app */
@@ -57,9 +59,9 @@ import java.text.SimpleDateFormat; /* just a temporary & fast way to convert Dat
 public class ApkUtils {
 
 	//fields
-	
+
 	//sdk level
-	
+
 	public static int sdk = Build.VERSION.SDK_INT;
 
 	//two important fields
@@ -130,10 +132,16 @@ public class ApkUtils {
 	public ArrayList<String> denied_permissions = new ArrayList<>();
 	/*activities of the app from file or package*/
 	public ArrayList<String> activities = new ArrayList<>();
+	public ArrayList<HashMap<String, String>> activities_info = new ArrayList<>();
+	public HashMap<String, String> MAP = new HashMap<>();
 	/*services of the app from file or package*/
 	public ArrayList<String> services = new ArrayList<>();
+	public ArrayList<HashMap<String, String>> services_info = new ArrayList<>();
+	public HashMap<String, String> MAP2 = new HashMap<>();
 	/*receivers of the app from file or package*/
 	public ArrayList<String> receivers = new ArrayList<>();
+	public ArrayList<HashMap<String, String>> receivers_info = new ArrayList<>();
+	public HashMap<String, String> MAP3 = new HashMap<>();
 	/*providers of the app from file or package*/
 	public ArrayList<String> providers = new ArrayList<>();
 	/*signature info*/
@@ -144,8 +152,10 @@ public class ApkUtils {
 	public long CREATED = 0;
 	public long ENDS = 0;
 	public String md5 = "null";
-	
-	
+	public String sha384 = "null";
+	public String sha512 = "null";
+	public String sha = "null";
+
 	/*if the developer (YOU) wanted to get info of an app from package and not file path*/
 	private boolean fromPackage;
 	private boolean temp = false;
@@ -544,7 +554,6 @@ public class ApkUtils {
 		try {
 
 			minSdkVersion = ai.minSdkVersion;
-			
 
 		} catch (Throwable e) {
 
@@ -771,21 +780,23 @@ public class ApkUtils {
 				}
 
 			}
-			
+
 			/*
 			checking granted and denied permissions credits
 			https://stackoverflow.com/a/37294804/17808329
 			*/
-			if(pckgInfo.requestedPermissionsFlags != null) {
-			
-			for (int i = 0; i < pckgInfo.requestedPermissions.length; i++) {
-				if ((pckgInfo.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0 ||(pckgInfo.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED) == PackageInfo.REQUESTED_PERMISSION_GRANTED) {
-					granted_permissions.add(pckgInfo.requestedPermissions[i]);
-				} else {
-					denied_permissions.add(pckgInfo.requestedPermissions[i]);
+			if (pckgInfo.requestedPermissionsFlags != null) {
+
+				for (int i = 0; i < pckgInfo.requestedPermissions.length; i++) {
+					if ((pckgInfo.requestedPermissionsFlags[i] & PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0
+							|| (pckgInfo.requestedPermissionsFlags[i]
+									& PackageInfo.REQUESTED_PERMISSION_GRANTED) == PackageInfo.REQUESTED_PERMISSION_GRANTED) {
+						granted_permissions.add(pckgInfo.requestedPermissions[i]);
+					} else {
+						denied_permissions.add(pckgInfo.requestedPermissions[i]);
+					}
 				}
-			}
-			
+
 			}
 
 		} catch (Throwable e) {
@@ -803,6 +814,20 @@ public class ApkUtils {
 				for (ActivityInfo a : pckgInfo.activities) {
 
 					activities.add(a.name);
+
+					MAP = new HashMap<>();
+
+					MAP.put("name", a.name);
+					MAP.put("isEnabled", String.valueOf(a.enabled));
+					MAP.put("isExported", String.valueOf(a.exported));
+					if (a.screenOrientation == Configuration.ORIENTATION_PORTRAIT) {
+						MAP.put("orientation", "portrait");
+					} else if (a.screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+						MAP.put("orientation", "landscape");
+					} else {
+						MAP.put("orientation", "undefined");
+					}
+					activities_info.add(MAP);
 
 				}
 
@@ -824,6 +849,14 @@ public class ApkUtils {
 
 					services.add(a.name);
 
+					MAP2 = new HashMap<>();
+
+					MAP2.put("name", a.name);
+					MAP2.put("isEnabled", String.valueOf(a.enabled));
+					MAP2.put("isExported", String.valueOf(a.exported));
+					MAP2.put("process", a.processName);
+					services_info.add(MAP2);
+
 				}
 
 			}
@@ -843,6 +876,14 @@ public class ApkUtils {
 				for (ActivityInfo a : pckgInfo.receivers) {
 
 					receivers.add(a.name);
+
+					MAP3 = new HashMap<>();
+
+					MAP3.put("name", a.name);
+					MAP3.put("isEnabled", String.valueOf(a.enabled));
+					MAP3.put("isExported", String.valueOf(a.exported));
+					MAP3.put("process", a.processName);
+					services_info.add(MAP3);
 
 				}
 
@@ -923,6 +964,7 @@ public class ApkUtils {
 			if (sdk < 28) {
 
 				packageInfo = cntx.getPackageManager().getPackageArchiveInfo(path, PackageManager.GET_SIGNATURES);
+				
 
 			} else {
 
@@ -961,6 +1003,21 @@ public class ApkUtils {
 			for (android.content.pm.Signature signature : signatures) {
 
 				String shaType = getSHAOfType_(signature.toByteArray(), type);
+				
+				CertificateFactory certFactory = CertificateFactory.getInstance("X509");
+				X509Certificate x509Cert = (X509Certificate) certFactory
+				.generateCertificate(new ByteArrayInputStream(signature.toByteArray()));
+				
+				serial = "" + x509Cert.getSerialNumber();
+				issuer = x509Cert.getIssuerDN() + "";
+				ends = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(x509Cert.getNotAfter());
+				created = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(x509Cert.getNotBefore());
+				CREATED = x509Cert.getNotBefore().getTime();
+				ENDS = x509Cert.getNotAfter().getTime();
+				md5 = getSHAOfType_(signature.toByteArray(), "MD5");
+				sha384 = getSHAOfType_(signature.toByteArray(), "SHA384");
+				sha512 = getSHAOfType_(signature.toByteArray() , "SHA512");
+				
 				// check is matches hardcoded value
 				return shaType;
 			}
@@ -1016,20 +1073,22 @@ public class ApkUtils {
 			for (android.content.pm.Signature signature : signatures) {
 
 				String shaType = getSHAOfType_(signature.toByteArray(), type);
-				
+
 				CertificateFactory certFactory = CertificateFactory.getInstance("X509");
-				X509Certificate x509Cert = (X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(signature.toByteArray()));
-				
-				serial = ""+x509Cert.getSerialNumber();
+				X509Certificate x509Cert = (X509Certificate) certFactory
+						.generateCertificate(new ByteArrayInputStream(signature.toByteArray()));
+
+				serial = "" + x509Cert.getSerialNumber();
 				issuer = x509Cert.getIssuerDN() + "";
 				ends = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(x509Cert.getNotAfter());
 				created = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(x509Cert.getNotBefore());
 				CREATED = x509Cert.getNotBefore().getTime();
 				ENDS = x509Cert.getNotAfter().getTime();
-				md5 = getSHAOfType_(signature.toByteArray(),"MD5");
+				md5 = getSHAOfType_(signature.toByteArray(), "MD5");
+				sha384 = getSHAOfType_(signature.toByteArray(), "SHA384");
+				sha512 = getSHAOfType_(signature.toByteArray() , "SHA512");
 				
-				
-				
+
 				// check is matches hardcoded value
 				return shaType;
 			}
@@ -1538,63 +1597,165 @@ public class ApkUtils {
 	public static final int SORT_BY_SIZE_DOWN_TO_UP = 5;
 	public static final int SORT_BY_LAST_UPDATE_UP_TO_DOWN = 6;
 	public static final int SORT_BY_LAST_UPDATE_DOWN_TO_UP = 7;
+	
+	
+	public static void openApp(Context c , String packageName) {
+		c.startActivity(c.getPackageManager().getLaunchIntentForPackage(packageName));
+	}
+	
+	//this should open the app settings and details
 
 	public static void openAppSettings(Context c, String packageName) {
-		
-		c.startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:" + packageName)));
-		
-	}
-	
-	
 
-	public static void openApp(Context c, String packageName , String activityPackageAndName) {
-		
-		c.startActivity(it(new Intent(Intent.ACTION_MAIN),packageName,activityPackageAndName));
-		
+		c.startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + packageName)));
+
 	}
 	
-	public static Intent it(Intent intent , String p , String c) {
+	//this should open the app with specific activity
+
+	public static void openApp(Context c, String packageName, String activityPackageAndName) {
+
+		c.startActivity(it(new Intent(Intent.ACTION_MAIN), packageName, activityPackageAndName));
+
+	}
+
+	public static Intent it(Intent intent, String p, String c) {
 		intent.addCategory(Intent.CATEGORY_LAUNCHER);
 		intent.setPackage(p);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.setClassName(p, c);
 		return intent;
 	}
+	
+	//this should uninstall the app by user permissions. add REQUEST_DELETE_PACKAGES permission
 
 	public static void uninstallApp(Context c, String packageName) {
-		c.startActivity(new Intent(Intent.ACTION_DELETE,Uri.parse("package:"+packageName)));
+		c.startActivity(new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + packageName)));
 	}
+	
+	//this should share the app as apk , put */* as typeMime or put your own , that thing will give android device idea what file type is this , search google to know application type mime
 
-	public static void shareApp(Context c, String packageName,String typeMime , String message) {
+	public static void shareApp(Context c, String packageName, String typeMime, String message) {
 		ApkUtils au = new ApkUtils(c);
 		au.setPackageName(packageName);
-		new ArabWareFileManager(au.getPublicSourceDir()).share(c,typeMime,message);
+		new ArabWareFileManager(au.getPublicSourceDir()).share(c, typeMime, message);
 	}
+	
+	//this should save the app as apk
 
-	public static void saveApp(Context c, String packageName, String where , CopyTask ct) {
-		
-		
+	public static void saveApp(Context c, String packageName, String where, CopyTask ct) {
+
 		ApkUtils au = new ApkUtils(c);
 		au.setPackageName(packageName);
-		new ArabWareFileManager(au.getPublicSourceDir()).copy(where,ct);
+		new ArabWareFileManager(au.getPublicSourceDir()).copy(where, ct);
 	}
-
+	
+	//is the apk package installed
+	
 	public static boolean isInstalled(Context c, String packageName) {
 		ApkUtils au = new ApkUtils(c);
 		au.setPackageName(packageName);
-		if(new java.io.File(au.getPublicSourceDir()).exists()) {
+		if (new java.io.File(au.getPublicSourceDir()).exists()) {
 			return true;
 		} else {
 			return false;
 		}
 	}
+	
+	//is the apk file signed?
 
 	public static boolean isSigned(Context c, File file) {
 		ApkUtils au = new ApkUtils(c);
-		if(au.signatures == null || au.SHA1 == "null" || au.SHA256 == "null") {
+		if (au.signatures == null || au.SHA1 == "null" || au.SHA256 == "null") {
 			return false;
 		}
 		return true;
 	}
+	
+	//it gets the signature creating date but as milli seconds . convert them to readable date by USING simple date format and date classes
+
+	public long getSignatureCreated() {
+		return CREATED;
+	}
+	
+	//it gets the signature ending date but as milli seconds . convert them to readable date by USING simple date format and date classes
+
+	public long getSignatureEnds() {
+		return ENDS;
+	}
+	
+	//it gets the signature creating date with the format you want , like yyyy/MM/dd hh:mm:ss will be like 2022/5/4 10:50:43
+
+	public String getSignatureCreated(String date_format) {
+		return new SimpleDateFormat(date_format).format(new Date(CREATED));
+	}
+	
+	//it gets the signature ending date with the format you want , like yyyy/MM/dd hh:mm:ss will be like 2022/5/4 10:50:43
+	
+	public String getSignatureEnds(String date_format) {
+		return new SimpleDateFormat(date_format).format(new Date(ENDS));
+	}
+	
+	//it gets the signature formal date of creating (like 2022/7/18 7:58:46)
+
+	public String getSignatureOfficalCreated() {
+		return created;
+	}
+	
+	//it gets the signature formal date of ending (like 2040/6/5 16:40:10)
+
+	public String getSignatureOfficalEnded() {
+		return ends;
+	}
+	
+	//md5 signature
+
+	public String getMD5() {
+		return md5;
+	}
+	
+	//sha 384 signature
+	
+	public String getSHA384() {
+		return sha384;
+	}
+	
+	//sha 512 signature
+	
+	public String getSHA512() {
+		return sha512;
+	}
+	
+	//it gets the signature issuern as string
+
+	public String getSignatureIssuer() {
+		return issuer;
+	}
+	
+	//it gets the signature serial big integer number as string
+
+	public String getSignatureSerial() {
+		return serial;
+	}
+	
+	//it gets the activities tags in the AndroidManifest.xml with thier info like isEnabled key gives android:enabled="boolean" String value ! , the available keys are isExported , isEnabled , name , and orientation (portrait or landscape or undefined value as String !)
+
+	public ArrayList<HashMap<String,String>> getActivitiesInfo() {
+		return activities_info;
+	}
+	
+	//it gets the services tags in the AndroidManifest.xml with thier info like isEnabled key gives android:enabled="boolean" String value ! , the available keys are isExported , isEnabled , name
+	
+	public ArrayList<HashMap<String,String>> getServicesInfo() {
+		return services_info;
+	}
+	
+	//it gets the reciever tags in the AndroidManifest.xml with thier info like isEnabled key gives android:enabled="boolean" String value ! , the available keys are isExported , isEnabled , name
+	
+	public ArrayList<HashMap<String,String>> getRecieversInfo() {
+		return receivers_info;
+	}
+	
+	
 
 }
