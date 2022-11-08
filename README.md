@@ -40,3 +40,4 @@ implementation 'com.github.abodinagdat16:EveryThingUtils:v1.4'
 
 [PdfUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/PdfUtils.md)
 
+[![Buy me a coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/AmeerEzit2023)
