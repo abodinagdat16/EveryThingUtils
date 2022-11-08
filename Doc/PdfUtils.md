@@ -114,24 +114,6 @@ int pagesCount = pu.getPagesCount();
 int width = pu.getPageWidth((int)0); // 0 is the page position
 int height = pu.getPageHeight((int)0);
 
-//to compress a pdf
-//YourPercent , from 0% to 100%
-//YourPath is a string variable
-pu.compressPdf(YourPercent,YourPath,new PdfUtils() {
-@Override
-public void done() {
-//done
-}
-@Override
-public void loading() {
-//loading
-}
-@Override
-public void error(String error) {
-//error details
-}
-});
-
 ```
 
 > pdf editor and creator !!
