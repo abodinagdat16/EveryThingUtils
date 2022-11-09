@@ -2,6 +2,10 @@
 ### ApkUtils is a class that can get info about apps (file path or package name) without any hard codes + it works for most (all) android versions from 5 to 13
 #### c is the context like MainActivity.this or Fragment.this.getActivity(); , path is the string path of apk file , pkg is the package name of the app , apk is the name of ApkUtils definition here
 
+## Add This Permission in Order to Get all info about an app by package on android 11 and later .
+## android.permission.QUERY_ALL_PACKAGES
+## ONLY IF YOU GET LIST OF APPS OR DANGEROUS INFO THEN YOU NEED IT , SOME WORK WITHOUT IT
+
 > first you have to create the ApkUtils then initialize it with a valid Context , I suggest an activity but it's OK to use another things
 
 ``` java
