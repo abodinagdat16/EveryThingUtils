@@ -7,12 +7,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 import java.util.ArrayList;
 
 public class DialogUtils {
@@ -28,6 +30,22 @@ public class DialogUtils {
 		
 	}
 	
+	public AlertDialog getAlertDialog() {
+		return ad;
+	}
+	
+	public Context getContext() {
+		return context;
+	}
+	
+	public void setAlertDialog(AlertDialog AD) {
+		ad = AD;
+	}
+	
+	public void setContext(Context c) {
+		context = c;
+	}
+	
 	public void setView(int layout) {
 		view = View.inflate(context,layout,null);
 		ad.setView(view);
@@ -36,6 +54,82 @@ public class DialogUtils {
 	public void setView(View v) {
 		view = v;
 		ad.setView(view);
+	}
+	
+	public void setGravity(int gravity) {
+		this.getWindow().setGravity(gravity);
+	}
+	
+	public void setWidthAndHeight(int w , int h) throws Throwable {
+		
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		
+		lp.copyFrom(this.getWindow().getAttributes());
+		
+		lp.width = w;
+		
+		lp.height = h;
+		
+		this.getWindow().setAttributes(lp);
+		
+		try {
+		
+		ViewGroup.LayoutParams vg = view.getLayoutParams();
+		
+		
+		
+		vg.width = w;
+		
+		vg.height = h;
+		
+		view.setLayoutParams(vg);
+		
+		
+		} catch(Throwable e) {
+			
+			throw new Throwable("unable to set width and height , are you sure your view that you use in custom dialog has been loaded , call the method of setting width and height after it has been loaded after showing the dialog!!!!!!!!!!!!!!!!!!!!!");
+			
+			
+		}
+	}
+	
+	public void setCoordinates(int x , int y) {
+		
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		
+		lp.copyFrom(this.getWindow().getAttributes());
+		
+		lp.x = x;
+		
+		lp.y = y;
+		
+		this.getWindow().setAttributes(lp);
+		
+		this.getWindow().getAttributes().dimAmount = 0;
+		
+		view.setTranslationX(x);
+		
+		view.setTranslationY(y);
+		
+	}
+	
+	public void setAlpha(float alpha) {
+		WindowManager.LayoutParams lp = this.getWindow().getAttributes();
+		lp.alpha = alpha;
+		this.getWindow().setAttributes(lp);
+		view.setAlpha(alpha);
+		
+	}
+	
+	public void rotate(int agl) {
+		try {
+		WindowManager.LayoutParams lp = this.getWindow().getAttributes();
+		lp.rotationAnimation = agl;
+		this.getWindow().setAttributes(lp);
+		} catch(Throwable e) {
+			
+		}
+		view.setRotation(agl);
 	}
 	
 	public void setBackgroundColor(int color) {
@@ -54,8 +148,10 @@ public class DialogUtils {
 		setBackgroundColor(Color.argb(alpha,red,green,blue));
 	}
 	
-	public void setBlurRadius(int radius) {
-		ad.getWindow().setBackgroundBlurRadius(radius);
+	public void setDim(int dim) {
+		WindowManager.LayoutParams lp = this.getWindow().getAttributes();
+		lp.dimAmount = dim;
+		this.getWindow().setAttributes(lp);
 	}
 	
 	public void show() {
@@ -114,7 +210,11 @@ public class DialogUtils {
 	
 	public void deleteOnShowListener() {
 		ad.setOnShowListener(null);
+		Toast t = new Toast(context);
+		
 	}
+	
+	
 	
 	
 	public ArrayList<View> getViews() {
