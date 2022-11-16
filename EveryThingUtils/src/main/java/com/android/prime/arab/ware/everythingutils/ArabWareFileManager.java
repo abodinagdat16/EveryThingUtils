@@ -46,10 +46,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import java.lang.String;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import android.content.Context;
 import com.android.prime.arab.ware.everythingutils.listeners.*;
@@ -73,13 +69,6 @@ import android.os.Environment;
 import java.util.List;
 import java.io.FileReader;
 import java.io.FileWriter;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.SecretKeySpec;
 
 //this is the definition of the class
 
@@ -2083,187 +2072,7 @@ final String s = path1;
 		
 	}
 	
-	
-	/* these encrypt , decrypt , generateKey are not supported yet , they are beta , they are took by a help from someone years ago on stackoverflow , i will replace them with my own but currently i dont know how cipher works so i have to use this. */
-	
-	
-	public static byte[] generateKey(String str, String str2, String str3) throws Exception {
-		byte[] bytes = str.getBytes(str2);
-		KeyGenerator instance = KeyGenerator.getInstance(str3);
-		SecureRandom instance2 = SecureRandom.getInstance("SHA1PRNG");
-		instance2.setSeed(bytes);
-		instance.init(128, instance2);
-		return instance.generateKey().getEncoded();
-	}
-	
-	public void encrypt(String str, String str2, String str3, String str4, String str5, FileTasks fileTasks) {
-		String str6 = "/";
-		if (!str2.endsWith(str6)) {
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append(str2);
-			stringBuilder.append(str6);
-			str2 = stringBuilder.toString();
-		}
-		StringBuilder stringBuilder2 = new StringBuilder();
-		stringBuilder2.append(str2);
-		stringBuilder2.append(str3);
-		final String stringBuilder3 = stringBuilder2.toString();
-		new Handler(Looper.getMainLooper()).post(new Runnable() {
-			public void run() {
-				
-				if (!new File(ArabWareFileManager.this.path).exists()) {
-					
-					if (fileTasks != null) {
-						StringBuilder stringBuilder = new StringBuilder();
-						stringBuilder.append("unable to find the path : ");
-						stringBuilder.append(ArabWareFileManager.this.path);
-						fileTasks.error(stringBuilder.toString());
-					}
-					} else if (new File(ArabWareFileManager.this.path).isDirectory()) {
-					
-					if (fileTasks != null) {
-						fileTasks.error("this is directory (folder) path and not pdf file path !");
-					}
-				}
-			}
-		});
-		final String str7 = str;
-		final String str8 = str5;
-		final String str9 = str4;
-		final FileTasks fileTasks2 = fileTasks;
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					FileInputStream fileInputStream = new FileInputStream(ArabWareFileManager.this.path);
-					File file = new File(ArabWareFileManager.this.path);
-					OutputStream fileOutputStream = new FileOutputStream(stringBuilder3);
-					Key secretKeySpec = new SecretKeySpec(ArabWareFileManager.generateKey(str7, str8, str9), str9);
-					Cipher instance = Cipher.getInstance(str9);
-					instance.init(Cipher.ENCRYPT_MODE, secretKeySpec);
-					CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, instance);
-					byte[] bArr = new byte[8];
-					new Handler(Looper.getMainLooper()).post(new Runnable() {
-						public void run() {
-							if (fileTasks2 != null) {
-								fileTasks2.loading();
-							}
-						}
-					});
-					while (true) {
-						int read = fileInputStream.read(bArr);
-						if (read != -1) {
-							cipherOutputStream.write(bArr, 0, read);
-							} else {
-							cipherOutputStream.flush();
-							cipherOutputStream.close();
-							fileInputStream.close();
-							new Handler(Looper.getMainLooper()).post(new Runnable() {
-								public void run() {
-									if (fileTasks2 != null) {
-										fileTasks2.done();
-									}
-								}
-							});
-							return;
-						}
-					}
-					} catch (final Throwable th) {
-					new Handler(Looper.getMainLooper()).post(new Runnable() {
-						public void run() {
-							if (fileTasks2 != null) {
-								fileTasks2.error(th.getMessage().toString());
-							}
-						}
-					});
-				}
-			}
-		}).start();
-	}
-	
-	public void decrypt(String str, String str2, String str3, String str4, String str5, FileTasks fileTasks) {
-		String str6 = "/";
-		if (!str2.endsWith(str6)) {
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append(str2);
-			stringBuilder.append(str6);
-			str2 = stringBuilder.toString();
-		}
-		StringBuilder stringBuilder2 = new StringBuilder();
-		stringBuilder2.append(str2);
-		stringBuilder2.append(str3);
-		final String stringBuilder3 = stringBuilder2.toString();
-		new Handler(Looper.getMainLooper()).post(new Runnable() {
-			public void run() {
-				
-				if (!new File(ArabWareFileManager.this.path).exists()) {
-					
-					if (fileTasks != null) {
-						StringBuilder stringBuilder = new StringBuilder();
-						stringBuilder.append("unable to find the path : ");
-						stringBuilder.append(ArabWareFileManager.this.path);
-						fileTasks.error(stringBuilder.toString());
-					}
-					} else if (new File(ArabWareFileManager.this.path).isDirectory()) {
-					
-					if (fileTasks != null) {
-						fileTasks.error("this is directory (folder) path and not pdf file path !");
-					}
-				}
-			}
-		});
-		final String str7 = str;
-		final String str8 = str5;
-		final String str9 = str4;
-		final FileTasks fileTasks2 = fileTasks;
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					FileInputStream fileInputStream = new FileInputStream(ArabWareFileManager.this.path);
-					File file = new File(ArabWareFileManager.this.path);
-					OutputStream fileOutputStream = new FileOutputStream(stringBuilder3);
-					Key secretKeySpec = new SecretKeySpec(ArabWareFileManager.generateKey(str7, str8, str9), str9);
-					Cipher instance = Cipher.getInstance(str9);
-					instance.init(Cipher.DECRYPT_MODE, secretKeySpec);
-					CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, instance);
-					byte[] bArr = new byte[8];
-					new Handler(Looper.getMainLooper()).post(new Runnable() {
-						public void run() {
-							if (fileTasks2 != null) {
-								fileTasks2.loading();
-							}
-						}
-					});
-					while (true) {
-						int read = fileInputStream.read(bArr);
-						if (read != -1) {
-							cipherOutputStream.write(bArr, 0, read);
-							} else {
-							cipherOutputStream.flush();
-							cipherOutputStream.close();
-							fileInputStream.close();
-							new Handler(Looper.getMainLooper()).post(new Runnable() {
-								public void run() {
-									if (fileTasks2 != null) {
-										fileTasks2.done();
-									}
-								}
-							});
-							return;
-						}
-					}
-					} catch (final Throwable th) {
-					new Handler(Looper.getMainLooper()).post(new Runnable() {
-						public void run() {
-							if (fileTasks2 != null) {
-								fileTasks2.error(th.getMessage().toString());
-							}
-						}
-					});
-				}
-			}
-		}).start();
-	}
-	
+
 	
 	
 
