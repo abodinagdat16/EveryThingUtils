@@ -141,6 +141,18 @@ public class FloatingWindowUtils {
 		
 	}
 	
+	public Context getContext() {
+		return context;
+	}
+	
+	public View getView() {
+		return view;
+	}
+	
+	public <T> T getView(int id , Class<T> c) {
+		return ((T)view.findViewById(id));
+	}
+	
 	
 	
 }
