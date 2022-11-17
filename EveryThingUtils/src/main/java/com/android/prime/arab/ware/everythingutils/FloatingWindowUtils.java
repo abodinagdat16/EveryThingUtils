@@ -72,6 +72,13 @@ public class FloatingWindowUtils {
 	}
 	
 	public void setTouchView(int id) {
+		try {
+		view.findViewById(id).setClickable(true);
+		view.findViewById(id).setFocusable(true);
+		view.findViewById(id).setFocusableInTouchMode(true);
+		} catch(Throwable e) {
+			
+		}
 		view.findViewById(id).setOnTouchListener(new View.OnTouchListener() {
 			
 			private int x;
