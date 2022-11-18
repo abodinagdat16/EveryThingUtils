@@ -1,4 +1,4 @@
-# EveryThingUtils
+# EveryThingUtils 
 It is a FileUtil/AnyThingElseUtils to help developers to work with files / or any thing else , please read the usage and warnings to know how it works.
 <br><br>
 [![](https://jitpack.io/v/abodinagdat16/EveryThingUtils.svg)](https://jitpack.io/#abodinagdat16/EveryThingUtils)
@@ -24,11 +24,11 @@ implementation 'com.github.abodinagdat16:EveryThingUtils:v1.8'
 
 <br>
 
-- [x] 👇👇⚠️⛔☢
+- [x] 👇👇⛔
 > BEFORE YOU USE FileUtils !
 > READ THIS BEFORE READING USAGE TEXT
 - [] it supports android 11 fully but you must add manage all storage permission or any other ways of accessing android folder , I will try to update it soon but currently you should do that yourself to access android folder , other folders are working well
-
+- SafUtils have some errors please do not use it yet
 #  Usage
 
 [FileUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/FileUtils.md)
