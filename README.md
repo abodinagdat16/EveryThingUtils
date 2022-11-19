@@ -33,6 +33,7 @@ implementation 'com.github.abodinagdat16:EveryThingUtils:v1.8'
 
 [FileUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/FileUtils.md)
 
+[PermissionUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/PermissionUtils.md)
 
 [ApkUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/ApkUtils.md)
 
