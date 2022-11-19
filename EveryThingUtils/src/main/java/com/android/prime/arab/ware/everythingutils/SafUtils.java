@@ -46,9 +46,10 @@ public class SafUtils {
     AppCompatActivity act;
     StorageManager sm; 
     Intent inte;
-
+//Don't use this class
     public SafUtils(AppCompatActivity act){
         this.act=act;
+
         } 
         
         
