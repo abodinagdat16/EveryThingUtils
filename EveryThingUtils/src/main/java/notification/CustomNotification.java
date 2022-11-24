@@ -581,7 +581,7 @@ public class CustomNotification {
 			
 		}
 		
-		return null;
+		
 
 	}
 
