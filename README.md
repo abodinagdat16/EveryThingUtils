@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/abodinagdat16/EveryThingUtils.svg)](https://jitpack.io/#abodinagdat16/EveryThingUtils)
+
 # EveryThingUtils 
 It is a FileUtil/AnyThingElseUtils to help developers to work with files / or any thing else , please read the usage and warnings to know how it works.
 <br><br>
