@@ -457,7 +457,7 @@ public class BigImageNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getActivity(context, noti_id, i, 0);
 
@@ -492,7 +492,7 @@ public class BigImageNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getBroadcast(context, noti_id, i, 0);
 
@@ -527,7 +527,7 @@ public class BigImageNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getService(context, noti_id, i, 0);
 
@@ -556,7 +556,7 @@ public class BigImageNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getActivity(context, noti_id, i, 0);
 
@@ -572,7 +572,7 @@ public class BigImageNotification {
 
 	public void openIntentWhenClick(Intent intent) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getActivity(context, noti_id, intent, 0);
 
@@ -687,7 +687,7 @@ public class BigImageNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getActivity(context, noti_id, i, 0);
 
@@ -720,7 +720,7 @@ public class BigImageNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getService(context, noti_id, i, 0);
 
@@ -753,7 +753,7 @@ public class BigImageNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getBroadcast(context, noti_id, i, 0);
 
@@ -780,7 +780,7 @@ public class BigImageNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getActivity(context, noti_id, i, 0);
 
@@ -833,7 +833,7 @@ public class BigImageNotification {
 
 	public PendingIntent getActivityPendingIntent(Intent i2) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getActivity(context, noti_id, i2, 0);
 
@@ -847,7 +847,7 @@ public class BigImageNotification {
 
 	public PendingIntent getServicePendingIntent(Intent i2) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getService(context, noti_id, i2, 0);
 
@@ -861,7 +861,7 @@ public class BigImageNotification {
 
 	public PendingIntent getBroadcastPendingIntent(Intent i2) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getBroadcast(context, noti_id, i2, 0);
 
@@ -875,7 +875,7 @@ public class BigImageNotification {
 
 	public void openActivityWithIntentWhenClick(Intent intent) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getActivity(context, noti_id, intent, 0);
 
@@ -891,7 +891,7 @@ public class BigImageNotification {
 
 	public void openServiceWithIntentWhenClick(Intent intent) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getService(context, noti_id, intent, 0);
 
@@ -907,7 +907,7 @@ public class BigImageNotification {
 
 	public void openBroadcastWithIntentWhenClick(Intent intent) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getBroadcast(context, noti_id, intent, 0);
 

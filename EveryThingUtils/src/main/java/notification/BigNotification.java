@@ -397,7 +397,7 @@ public class BigNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getActivity(context, noti_id, i, 0);
 
@@ -432,7 +432,7 @@ public class BigNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getBroadcast(context, noti_id, i, 0);
 
@@ -467,7 +467,7 @@ public class BigNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getService(context, noti_id, i, 0);
 
@@ -496,7 +496,7 @@ public class BigNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getActivity(context, noti_id, i, 0);
 
@@ -512,7 +512,7 @@ public class BigNotification {
 
 	public void openIntentWhenClick(Intent intent) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getActivity(context, noti_id, intent, 0);
 
@@ -627,7 +627,7 @@ public class BigNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getActivity(context, noti_id, i, 0);
 
@@ -660,7 +660,7 @@ public class BigNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getService(context, noti_id, i, 0);
 
@@ -693,7 +693,7 @@ public class BigNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getBroadcast(context, noti_id, i, 0);
 
@@ -720,7 +720,7 @@ public class BigNotification {
 
 		}
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getActivity(context, noti_id, i, 0);
 
@@ -748,13 +748,9 @@ public class BigNotification {
 
 		try {
 
-			
-
 			n.setColor(color);
 
 		} catch (Throwable e) {
-
-			
 
 		}
 
@@ -774,7 +770,7 @@ public class BigNotification {
 
 	public PendingIntent getActivityPendingIntent(Intent i2) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getActivity(context, noti_id, i2, 0);
 
@@ -788,7 +784,7 @@ public class BigNotification {
 
 	public PendingIntent getServicePendingIntent(Intent i2) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getService(context, noti_id, i2, 0);
 
@@ -802,7 +798,7 @@ public class BigNotification {
 
 	public PendingIntent getBroadcastPendingIntent(Intent i2) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			return PendingIntent.getBroadcast(context, noti_id, i2, 0);
 
@@ -816,7 +812,7 @@ public class BigNotification {
 
 	public void openActivityWithIntentWhenClick(Intent intent) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getActivity(context, noti_id, intent, 0);
 
@@ -832,7 +828,7 @@ public class BigNotification {
 
 	public void openServiceWithIntentWhenClick(Intent intent) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getService(context, noti_id, intent, 0);
 
@@ -848,7 +844,7 @@ public class BigNotification {
 
 	public void openBroadcastWithIntentWhenClick(Intent intent) {
 
-		if (Build.VERSION.SDK_INT > 30) {
+		if (Build.VERSION.SDK_INT < 31) {
 
 			pi = PendingIntent.getBroadcast(context, noti_id, intent, 0);
 
