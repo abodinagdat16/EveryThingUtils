@@ -202,7 +202,7 @@ MyNotification.setTitle(YourString);
 
 **بالعنوان ، متغير او قيمة نصية**
 
-## how to set long title ?
+## how to set long title ? كيفية تعيين العنوان الطويل
 
 ``` java
 MyNotification.setBigTitle(YourString);
@@ -235,7 +235,7 @@ MyNotification.setDescription(YourString);
 
 **بالوصف ، متغير او قيمة نصية**
 
-## how to set long description ?
+## how to set long description ? كيفية تعيين الوصف الطويل
 
 ``` java
 
