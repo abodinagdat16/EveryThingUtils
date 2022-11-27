@@ -288,14 +288,31 @@ MyNotification.setSmallCustomViewVisibility(R.id.MyViewId , View.GONE); // OR Vi
 
 ## اذا اردت التحكم بالواجهات المخصصة بنفسك برمجيا
 
+``` java
 
 RemoteViews MyRemoteViews1 = MyNotification.rvs; //small custom view الواجهة الصغيرة
 
 RemoteViews MyRemoteViews2 = MyNotification.rvs2; //big custom view الواجهة الكبيرة
 
+```
+
 ### how to set small icon ?
-#### there are 5 sources to set small icon from !
-#### setting small icon from resource ( like R.drawable.icon )
+
+### كيفية تعيين الصورة الصغيرة ؟
+
+
+**there are 5 sources to set small icon from !**
+
+**هنالك خمسة مصادر يمكنك تعيين الصورة الصغيرة من**
+
+
+**setting small icon from resource ( like R.drawable.icon )**
+
+**تعيين الصورة الصغيرة من داخل تطبيقك من**
+
+**resource**
+
+**R.drawable.logo مثلا**
 
 ``` java
 
@@ -303,35 +320,62 @@ MyNotification.setSmallIcon(R.drawable.quran);
 
 ```
 
-### setting small icon from resource but by String (folder name + file name)
+**setting small icon from resource but by String (folder name + file name)**
+
+**تعيين الصورة المصغرة مثل السابقة لكن تحديد اسم المجلد و الملف بواسطة متغير نصي ، أو قيمة نصية**
+
+**"drawable" + "logo" مثلا**
+
 
 ``` java
 
 MyNotification.setSmallIcon("drawable","quran"); // you can replace Strings values with strings variables names
 
-// example 2
+// example 2 مثال ثاني
 
 MyNotification.setSmallIcon(FolderString,FileString);
 
 ```
 
-### setting it from assets
+**setting it from assets**
+
+**تعيينها من**
+
+**assets**
+
+
 
 ``` java
 
-MyNotification.setSmallIcon(YourAssetsFileNameOrPathAsString); // I think reading the text between () explains what to put ...
+MyNotification.setSmallIcon(YourAssetsFileNameOrPathAsString);
+// I think reading the text between () explains what to put ...
+//استبدل الكلمة بين القوسين بمتغير نصي او قيمة نصية تمثل اسم او مسار الصوت هنالك**
+
 
 ```
 
-### setting from file path
+**setting from file path**
+
+**التعيين من مسار الملف**
 
 ``` java
 
-MyNotification.setSmallIcon(new java.io.File(FilePathAsString)); // FilePathAsString => file path as string ....
-
+MyNotification.setSmallIcon(new java.io.File(FilePathAsString));
+// FilePathAsString => file path as string ....
+// FilePathAsString => متغير نصي او قيمة نصية تمثل مسار الملف
 ```
 
-### setting from bitmap ( like using glide library to get bitmap from url , you get it right ???
+**setting from bitmap ( like using glide library to get bitmap from url , you get it right )**
+
+**التعيين من**
+
+**Bitmap**
+
+**سيفيدك بالتعيين من رابط مثلا ، عبر مكتبة**
+
+**glide**
+
+
 
 ``` java
 
@@ -343,16 +387,29 @@ MyNotification.setSmallIcon(MyBitmap);
 
 ### NOW WE WILL TALK ABOUT BIG ICON
 
-### Big icon same as small icon , just replace the (Small) word in codes with (Big) word ..
+**Big icon same as small icon , just replace the (Small) word in codes with (Big) word ..**
+
+### الآن سوف نتحدث عن الأيقونة الكبيرة
+
+**نفس الصغيرة و لكن استبدل كلمة**
+
+**Small**
+
+**بكلمة**
+
+**Big**
 
 ### how to set if the notification is going to be changed (updated) or no ( if the value is true then your notification (which has same id number) will never cause a sound or be shown again like it is new + now you can update it without disturbing user
 
+### كيفية تعيين اذا كان الاشعار قابل للتغيير يعني تغيير نص مثلا بعد عرضه ، يجب نفس الرقم التعريفي للاشعار و يفضل نفس اسم القناة طبعا
 
 ``` java
 
 MyNotification.setAlertOnce(true);
 
 //if you don't want that , just don't add the code or :
+
+//اذا كنت لا تريد ذلك ، لا تضف الكود ببساطة او
 
 MyNotification.setAlertOnce(false);
 
@@ -361,70 +418,97 @@ MyNotification.setAlertOnce(false);
 
 ### how to set if notification can be removed by user or no
 
+### كيفية تعيين اذا كان الاشعار قابل للحذف بواسطة المستخدم
+
 ``` java
 
-MyNotification.setCanBeRemoved(true); // replace (true) with (false) to make it impossible to be deleted by user by finger
-
+MyNotification.setCanBeRemoved(true);
+// replace (true) with (false) to make it impossible to be deleted by user by finger
+//استبدل
+//true
+//ب
+//false
+//لجعلها غير قابلة للحذف
 ```
 
 ### Adding Events For Notification Clicked , Optional!
 
+### إضافة أحداث ضغط الأشعار، اختيارية
+
 > open activity when clicked :
+
+> فتح اكتيفيتي عند الضغط
 
 ``` java
 
-MyNotification.openActivityWhenClick(MainActivity.class); //MainActivity Activity
+MyNotification.openActivityWhenClick(MainActivity.class);
+//MainActivity Activity
+//MainActivity اكتيفيتي اسمها
 
 ```
 
 > open service when clicked :
 
+> تشغيل سيرفس عند الضغط 
+
 ``` java
 
-MyNotification.openServiceWhenClick(MyService.class); //MyService Service
+MyNotification.openServiceWhenClick(MyService.class);
+//MyService Service
+//MyService سيرفس اسمها
 
 ```
 
 > open broadcast when clicked :
 
+> تشغيل برودكاست عند الضغط
+
 ``` java
 
-MyNotification.openBroadcastWhenClick(BR.class); //BR broadcast
+MyNotification.openBroadcastWhenClick(BR.class);
+//BR broadcast
+//BR برودكاست اسمه
 
 ```
 
 > open url when click :
 
+> فتح رابط عند الضغط 
+
 ``` java
 
-MyNotification.openUrlWhenClick("My Url");
+MyNotification.openUrlWhenClick("My Url رابطي");
 
 // or from String variable
+
+// او من متغير نصي
 
 MyNotification.openUrlWhenClick(MyUrl);
 
 ```
 
 
-### setting title color ( android 5 and up , lower don't harm , still work but still system color )
+## setting title color ( android 5 and up , lower don't harm , still work but still system color )
+
+## تعيين لون العنوان ، لن تؤثر بشيء الا على الهواتف أندرويد خمسة فما فوق ، امل تحت فلن تتعطل و لكن فقط لن يتغير اللون
 
 ``` java
 
 MyNotification.setColor(Color.RED);
 
-//OR
+//OR او
 
 MyNotification.setColor(0xFF4527A0);
 
-//OR
+//OR او
 
 MyNotification.setColor("#FF4527A0");
 
-//OR
+//OR او
 
 MyNotification.setColor(100,200,150); //rgb
 
-//OR
+//OR او
 
 MyNotification.setColor(150,200,100,182); //argb
 
@@ -434,20 +518,34 @@ MyNotification.setColor(150,200,100,182); //argb
 
 ### how to show , get notification and cancel one
 
+### كيفية اظهار ، استلام ، إغلاق الاشعار
+
 ``` java
 // to show
-MyNotification.show();
-// if setAlertOnce is used and set to true then if a previous notification with same id and channel name is available then it will be replaced .
+//لإظهار الاشعار
 
+MyNotification.show();
+
+// if setAlertOnce is used and set to true then if a previous notification with same id and channel name is available then it will be replaced .
+//اذا فعلت وضع الاشعار قابل للتغيير فلن يظهر صوت و سوف يتم استبدال الاشعاؤ الذي يملك رقم التعريف نفسه بالجديد هذا ، مثلا تغيير نص
+
+
+//to close
+//للاغلاق
 
 MyNotification.cancel(0);
-// here we are
-// canceling a notification with id number = 0
 
+// here we are نحن هن
+// canceling a notification with id number = 0
+//نغلق اشعار رقمه التعريفي صفر
+
+//لاستلام الأشعار لاغراض أخرى , مثلا وضعه في دالة تشغيل عمل بالخلفية او شيء ما اخر .......
+//to receive notification for some reasons
 
 android.app.Notification n = MyNotification.getNotification();
 
-// here we are getting Notification,  so we can use it to another reason instead of showing it , like putting it on startForeground method or something
+// there we are getting Notification,  so we can use it to another reason instead of showing it , like putting it on startForeground method or something
+
 
 ```
 
