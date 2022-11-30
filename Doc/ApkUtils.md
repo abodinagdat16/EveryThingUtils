@@ -86,7 +86,19 @@ YourString = apk.getVersionCode();
 ``` java
 
 Drawable drawable = apk.getIcon();
-imageview1.setImageDrawable(drawable);
+    try{
+
+   if(drawable != null){
+
+    imageview1.setImageDrawable(drawable);
+    }else{
+   ///If the Apk is broken, the program will not jump
+
+    img.setImageResource(R.drawable.ErrorImage);
+    }
+   }catch(Exception exception){
+     exception.printStackTrace();
+    }
 
 
 
