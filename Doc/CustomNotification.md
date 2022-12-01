@@ -26,6 +26,8 @@
 - حدث ضغط الأشعار ، غير إجباري ، بواسطتك
 - notification buttons (optional) , by you
 - ازرار الاشعار ، غير إجبارية ، بواسطتك
+:warning: 
+**Action buttons are same for the 4 notifications types**
 
 ### after you add the library to your project , add this import :
 ### بعدما تضيف المكتبة لمشروعك ، أضف هذا الامبورت
@@ -548,5 +550,4 @@ android.app.Notification n = MyNotification.getNotification();
 
 
 ```
-
 
