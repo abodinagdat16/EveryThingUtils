@@ -1,3 +1,4 @@
+**Action buttons are same for the 4 notifications types**
 ## Big Image Notification
 
 ## الاشعارات كبيرة الصورة
@@ -28,6 +29,8 @@
 - حدث ضغط الأشعار ، غير إجباري ، بواسطتك
 - notification buttons (optional) , by you
 - ازرار الاشعار ، غير إجبارية ، بواسطتك
+:warning: 
+**Action buttons are same for the 4 notifications types**
 
 ### after you add the library to your project , add this import :
 
