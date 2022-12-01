@@ -26,4 +26,6 @@
 
 [Custom Notification الاشعارات المخصصة](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/CustomNotification.md)
 
-
+:warning: 
+**Action buttons are same for the 4 notifications types**
+  
