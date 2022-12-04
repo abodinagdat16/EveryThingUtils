@@ -2,6 +2,10 @@
 
 ## Copy Right ArabWare 2022 حقوق النشر عرب وير
 
+## If You Target Android Sdk 33 ( Android 13 ) Then Your app Must has POST_NOTIFICATION permission and user should grant it on runtime !
+
+## اذا كان المستخدم أندرويد ثلاثة عشر ، يجب تضع في تطبيقك صلاحية نشر الاشعارات و اسمها فوق  ، المهم و يجب يوافق عليها أثناء تشغيل التطبيق او من الاعدادات  
+
 ## There Are Four Types Of Notifications
 
 ## هنالك أربعة انواع من الاشعارات
