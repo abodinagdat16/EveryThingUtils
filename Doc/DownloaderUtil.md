@@ -37,3 +37,10 @@ DownloaderUtil downloaderUtil = new DownloaderUtil();
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 	<uses-permission android:name="android.permission.INTERNET" />
 ```
+### To display the notification, be sure to inject this piece of code in your Android Manifest so that the download notification is activated for you
+
+``` xml
+<service android:name="com.android.prime.arab.ware.everythingutils.DownloaderModel.DownloadService"/>
+    <receiver android:name="com.android.prime.arab.ware.everythingutils.DownloaderModel.StopServiceReceiver"/>
+
+```
