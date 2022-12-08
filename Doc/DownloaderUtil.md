@@ -28,3 +28,12 @@ DownloaderUtil downloaderUtil = new DownloaderUtil();
 DownloaderUtil downloaderUtil = new DownloaderUtil();
 		downloaderUtil.DownloadFileOnView("input","output",bar,textView);
 ```
+### Well don't forget to add these handy hands on AndroidManifest.xml 
+
+``` xml 
+
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+	<uses-permission android:name="android.permission.INTERNET" />
+```
