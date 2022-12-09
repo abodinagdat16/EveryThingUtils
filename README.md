@@ -35,6 +35,8 @@ implementation 'com.github.abodinagdat16:EveryThingUtils:v2.2'
 
 [FileUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/FileUtils.md)
 
+[DownloadUtil](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/DownloadUtil.md)
+
 [NotificationUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/NotificationUtils.md)
 
 [PermissionUtils](https://github.com/abodinagdat16/EveryThingUtils/blob/master/Doc/PermissionUtils.md)
