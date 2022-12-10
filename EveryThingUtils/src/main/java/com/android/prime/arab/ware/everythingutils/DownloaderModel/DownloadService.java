@@ -15,7 +15,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
-
+import com.android.prime.arab.ware.everythingutils.R;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -98,7 +98,7 @@ public class DownloadService extends Service {
 
 		NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.app_icon, "stop", stopDownload());
 
-		mBuilder.setSmallIcon(android.R.drawable.stat_sys_download).setTicker("download")
+		mBuilder.setSmallIcon(R.drawable.download).setTicker("download")
 				.setContentTitle("downloading file " + new File(filePath).getName())
 				.setContentText("Download will starts...").setAutoCancel(false).setOngoing(true).addAction(action);
 
