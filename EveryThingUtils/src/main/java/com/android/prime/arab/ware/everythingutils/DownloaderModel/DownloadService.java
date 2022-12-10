@@ -96,7 +96,7 @@ public class DownloadService extends Service {
 
 		final NotificationCompat.Builder mBuilder = notificationCompat(notificationManager);
 
-		NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.app_icon, "stop", stopDownload());
+		NotificationCompat.Action action = new NotificationCompat.Action(android.R.drawable.download, "stop", stopDownload());
 
 		mBuilder.setSmallIcon(R.drawable.download).setTicker("download")
 				.setContentTitle("downloading file " + new File(filePath).getName())
