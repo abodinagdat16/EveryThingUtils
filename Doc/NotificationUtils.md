@@ -32,4 +32,4 @@
 
 :warning: 
 **Action buttons are same for the 4 notifications types**
-  
+**ازرار الاشعارات هي نفس الاكواد لكل الانواع**
