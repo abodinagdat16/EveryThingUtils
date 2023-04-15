@@ -438,18 +438,18 @@ public void error(ArrayList<String> errors) {
 
 ```
 
-> checking if the package is installed
+> checking if the apk file is signed
 
 ``` java
-if(ApkUtils.isInstalled(MainActivity.this,PackageName)) {
-//installed
+if(ApkUtils.isSigned(MainActivity.this,new java.io.File(PathAsString))) {
+//signed
 } else {
-//not installed
+//not signed
 }
 
 ```
 
-> how to check if the apk file is signed
+> how to check if the package is installed
 
 ``` java
 try {
