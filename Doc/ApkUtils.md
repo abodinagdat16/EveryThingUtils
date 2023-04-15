@@ -452,13 +452,13 @@ if(ApkUtils.isInstalled(MainActivity.this,PackageName)) {
 > how to check if the apk file is signed
 
 ``` java
-
-if(ApkUtils.isSigned(MainActivity.this,new java.io.File(PathAsString))) {
-//signed
-} else {
-//not signed
+try {
+if(ApkUtils.isInstalled(MainActivity.this,PackageName)) {
+//installed
 }
-
+} catch(Throwable e) {
+//not installed
+}
 ```
 
 ## Signature Info
