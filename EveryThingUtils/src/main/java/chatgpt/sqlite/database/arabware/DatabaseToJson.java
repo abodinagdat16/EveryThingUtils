@@ -1,17 +1,15 @@
-package chatgpt.sqlite.database.arabware;
 import android.content.Context;
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseToJson {
 
@@ -33,31 +31,43 @@ public class DatabaseToJson {
         new Thread(() -> {
             SQLiteDatabase db = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
 
-            Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
-            int count = cursor.getCount();
-
-            Gson gson = new GsonBuilder().create();
-
             try (FileWriter writer = new FileWriter(jsonFile)) {
-                writer.write("[");
-                while (cursor.moveToNext()) {
-                    String tableName = cursor.getString(0);
-                    Cursor tableCursor = db.rawQuery("SELECT * FROM " + tableName, null);
+                Gson gson = new Gson();
+                JsonArray tablesArray = new JsonArray();
+                String[] tableNames = getTableNames(db);
+                int tablesCount = tableNames.length;
 
-                    List<ContentValues> tableRows = new ArrayList<>();
-                    while (tableCursor.moveToNext()) {
-                        tableRows.add(cursorToJSON(tableCursor));
+                for (int i = 0; i < tablesCount; i++) {
+                    String tableName = tableNames[i];
+                    JsonArray tableData = new JsonArray();
+
+                    Cursor cursor = db.query(tableName, null, null, null, null, null, null);
+                    int tableRowCount = cursor.getCount();
+
+                    if (cursor.moveToFirst()) {
+                        do {
+                            JsonObject rowObject = new JsonObject();
+                            int columnCount = cursor.getColumnCount();
+                            for (int j = 0; j < columnCount; j++) {
+                                String columnName = cursor.getColumnName(j);
+                                String columnValue = cursor.getString(j);
+                                rowObject.addProperty(columnName, columnValue);
+                            }
+                            tableData.add(rowObject);
+                        } while (cursor.moveToNext());
                     }
+                    cursor.close();
 
-                    writer.write("{\"table_name\":\"" + tableName + "\",\"table_data\":");
-                    gson.toJson(tableRows, writer);
-                    writer.write("},");
+                    JsonObject tableObject = new JsonObject();
+                    tableObject.addProperty("table_name", tableName);
+                    tableObject.add("table_data", tableData);
 
-                    tableCursor.close();
+                    tablesArray.add(tableObject);
 
-                    mListener.onProgressUpdate(tableRows.size(), count);
+                    mListener.onProgressUpdate(i + 1, tablesCount);
                 }
-                writer.write("]");
+
+                gson.toJson(tablesArray, writer);
 
                 mListener.onConversionComplete(jsonFile);
 
@@ -65,32 +75,23 @@ public class DatabaseToJson {
                 e.printStackTrace();
                 mListener.onConversionError(e);
             } finally {
-                cursor.close();
                 db.close();
             }
         }).start();
     }
 
-    private ContentValues cursorToJSON(Cursor cursor) {
-        ContentValues contentValues = new ContentValues();
-        String[] columns = cursor.getColumnNames();
-        for (String column : columns) {
-            int columnIndex = cursor.getColumnIndex(column);
-            switch (cursor.getType(columnIndex)) {
-                case Cursor.FIELD_TYPE_FLOAT:
-                    contentValues.put(column, (float)cursor.getFloat(columnIndex));
-                    break;
-                case Cursor.FIELD_TYPE_INTEGER:
-                    contentValues.put(column, (int)cursor.getInt(columnIndex));
-                    break;
-                case Cursor.FIELD_TYPE_NULL:
-                    contentValues.put(column, (Object) null);
-                    break;
-                case Cursor.FIELD_TYPE_STRING:
-                    contentValues.put(column, (String)cursor.getString(columnIndex));
-                    break;
-            }
+    private String[] getTableNames(SQLiteDatabase db) {
+        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+        int tableCount = cursor.getCount();
+        String[] tableNames = new String[tableCount];
+        if (cursor.moveToFirst()) {
+            int index = 0;
+            do {
+                tableNames[index] = cursor.getString(0);
+                index++;
+            } while (cursor.moveToNext());
         }
-        return contentValues;
+        cursor.close();
+        return tableNames;
     }
 }
