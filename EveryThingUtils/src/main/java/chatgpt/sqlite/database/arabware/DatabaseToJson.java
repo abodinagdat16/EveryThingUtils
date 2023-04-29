@@ -77,20 +77,17 @@ public class DatabaseToJson {
         for (String column : columns) {
             int columnIndex = cursor.getColumnIndex(column);
             switch (cursor.getType(columnIndex)) {
-                case Cursor.FIELD_TYPE_BLOB:
-                    contentValues.put(column, (Object)cursor.getBlob(columnIndex));
-                    break;
                 case Cursor.FIELD_TYPE_FLOAT:
-                    contentValues.put(column, (Object)cursor.getFloat(columnIndex));
+                    contentValues.put(column, (float)cursor.getFloat(columnIndex));
                     break;
                 case Cursor.FIELD_TYPE_INTEGER:
-                    contentValues.put(column, (Object)cursor.getInt(columnIndex));
+                    contentValues.put(column, (int)cursor.getInt(columnIndex));
                     break;
                 case Cursor.FIELD_TYPE_NULL:
                     contentValues.put(column, (Object) null);
                     break;
                 case Cursor.FIELD_TYPE_STRING:
-                    contentValues.put(column, (Object)cursor.getString(columnIndex));
+                    contentValues.put(column, (String)cursor.getString(columnIndex));
                     break;
             }
         }
