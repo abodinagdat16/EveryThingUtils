@@ -53,7 +53,7 @@ public class JsonToDatabase {
                             JsonObject rowObject = tableData.get(j).getAsJsonObject();
                             ContentValues rowValues = new ContentValues();
                             for (String column : rowObject.keySet()) {
-                                rowValues.put(column, getFieldValue(rowObject.get(column)));
+                                rowValues.put(column, rowObject.get(column).getAsString());
                             }
                             db.insert(tableName, null, rowValues);
                         }
@@ -80,15 +80,5 @@ public class JsonToDatabase {
                 db.close();
             }
         }).start();
-    }
-
-    private Object getFieldValue(JsonElement valueElement) {
-        if (valueElement.isJsonNull()) {
-            return null;
-        } else if (valueElement.isJsonPrimitive()) {
-            return (Object)valueElement.getAsString();
-        } else {
-            return (Object)valueElement.toString();
-        }
     }
 }
