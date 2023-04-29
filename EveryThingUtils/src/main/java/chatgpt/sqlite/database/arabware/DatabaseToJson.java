@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaeToJson {
+public class DatabaseToJson {
 
     public interface ProgressListener {
         void onProgressUpdate(int progress, int max);
