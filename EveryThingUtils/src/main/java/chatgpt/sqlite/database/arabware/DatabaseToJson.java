@@ -1,5 +1,6 @@
 package chatgpt.sqlite.database.arabware;
 import android.content.Context;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -77,19 +78,19 @@ public class DatabaseToJson {
             int columnIndex = cursor.getColumnIndex(column);
             switch (cursor.getType(columnIndex)) {
                 case Cursor.FIELD_TYPE_BLOB:
-                    contentValues.put(column, cursor.getBlob(columnIndex));
+                    contentValues.put(column, (Object)cursor.getBlob(columnIndex));
                     break;
                 case Cursor.FIELD_TYPE_FLOAT:
-                    contentValues.put(column, cursor.getFloat(columnIndex));
+                    contentValues.put(column, (Object)cursor.getFloat(columnIndex));
                     break;
                 case Cursor.FIELD_TYPE_INTEGER:
-                    contentValues.put(column, cursor.getInt(columnIndex));
+                    contentValues.put(column, (Object)cursor.getInt(columnIndex));
                     break;
                 case Cursor.FIELD_TYPE_NULL:
-                    contentValues.put(column, (String) null);
+                    contentValues.put(column, (Object) null);
                     break;
                 case Cursor.FIELD_TYPE_STRING:
-                    contentValues.put(column, cursor.getString(columnIndex));
+                    contentValues.put(column, (Object)cursor.getString(columnIndex));
                     break;
             }
         }
