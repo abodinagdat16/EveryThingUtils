@@ -86,9 +86,9 @@ public class JsonToDatabase {
         if (valueElement.isJsonNull()) {
             return null;
         } else if (valueElement.isJsonPrimitive()) {
-            return valueElement.getAsString();
+            return (Object)valueElement.getAsString();
         } else {
-            return valueElement.toString();
+            return (Object)valueElement.toString();
         }
     }
 }
