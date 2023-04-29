@@ -20,7 +20,7 @@ allprojects {
 #### Step 2. Add the dependency
 ``` gradle
 dependencies {
-implementation 'com.github.abodinagdat16:EveryThingUtils:v2.2'
+implementation 'com.github.abodinagdat16:EveryThingUtils:v2.4'
 }
 ```
 
